@@ -1,7 +1,16 @@
 This repository contains all the assets to create full and responsive landing pages on the RMATVMC website.
-Only RMATVMC employees have access to these assets.
 
 Here are different usaes and variations on the styles provided in this repository.
 
 How to set up a page:
-  1. Add this <link> tag to the top of the page: 
+  Add this to the blank page:
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.css">
+    <div id="rm-landing">
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing-script.js"></script>
+
+  - All page content will go inside the <div id="rm-landing"> tag
+  - If you need to add extra styles to any particular page, add a <style> tag after the <link> tag and place in the custom styles there (or use inline styling).
+    • Be sure to use specific style tags. As a standard add #rm-landing before each element.
