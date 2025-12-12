@@ -337,7 +337,6 @@
         box-shadow: 0 0 0 100vmax var(--full-bleed-bg);
         clip-path: inset(0 -100vmax);
         color: var(--full-bleed-color);
-        min-height: 300px;
         &.bleed-white{
             --full-bleed-bg: white;--full-bleed-color: black;
             & .card {border: 1px solid rgb(0 0 0 / 0.15);}
