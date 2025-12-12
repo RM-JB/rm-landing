@@ -7,8 +7,6 @@
     :is(div#NoNavBarPageContent, div.ux-content) {
         padding: 0 !important;
         width: 100% !important;
-
-        background-color: black !important;
     }
     div.headerSpacing{margin: 0;}
 
