@@ -10,6 +10,7 @@
 
         background-color: black !important;
     }
+    div.headerSpacing{margin: 0;}
 
     div#rm-landing {
         --content-width: 1200px;
@@ -66,6 +67,8 @@
         }
     }
 
+    div#rm-landing nav a.button {margin: 0 !important;}
+
 
     /* HEADER */
     div#rm-landing > header {
@@ -108,7 +111,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 0.25rem 1rem;
-        place-content: center;
+        justify-content: center;
         place-items: center;
     }
 
@@ -359,6 +362,10 @@
         }
     }
     @media (max-width: 600px) {
+        div#rm-landing nav.sections {
+            gap: 0.5rem;
+            & a.button {font-size: 0.95em;}
+        }
        div#rm-landing section.categories{
             &.two-wide {--columns: 2;}
             &.three-wide {--columns: 2;}
@@ -367,5 +374,3 @@
         }
         div#rm-landing section.spotlight div {flex-grow: 0.5;}
     }
-
-    /* ANIMATIONS */
