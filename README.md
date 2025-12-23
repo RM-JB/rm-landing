@@ -4,7 +4,7 @@ Here are different usaes and variations on the styles provided in this repositor
 
 Add this to the blank page to get things started:
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing/rm-landing.css">
     <div id="rm-landing">
 
     </div>
