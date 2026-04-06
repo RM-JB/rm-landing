@@ -1,33 +1,57 @@
-// Adding rm-container
-document.addEventListener("DOMContentLoaded", () => {
-    const landing = document.querySelector("#rm-landing");
-    if (!landing) return;
+document.querySelectorAll('.product-grid.full-bleed, .product-horizontal.full-bleed, .gallery.full-bleed')
+.forEach(parent => {
+  // Skip if already wrapped (prevents duplication)
+  if (parent.querySelector(':scope > .wrapper')) return;
 
-    Array.from(landing.children).forEach(section => {
-        // Avoid double-wrapping
-        if (section.querySelector(":scope > rm-container")) return;
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('wrapper');
 
-        const container = document.createElement("rm-container");
+  // Move all children into wrapper
+  while (parent.firstChild) {
+    wrapper.appendChild(parent.firstChild);
+  }
 
-        // Move all existing children into rm-container
-        while (section.firstChild) {
-            container.appendChild(section.firstChild);
-        }
-
-        section.appendChild(container);
-    });
+  parent.appendChild(wrapper);
 });
 
-// Hover
-document.querySelectorAll('div > a.button').forEach(btn => {
-    const div = btn.parentElement;
+document.addEventListener('DOMContentLoaded', () => {
+// Wrap children of full-bleed grids/horizontals
+document
+  .querySelectorAll('.product-grid.full-bleed, .product-horizontal.full-bleed')
+  .forEach(parent => {
+    if (parent.querySelector(':scope > .wrapper')) return;
 
-    if (btn.href) {
-        div.style.cursor = 'pointer';
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('wrapper');
 
-        div.addEventListener('click', (e) => {
-            if (e.target === btn) return;
-            window.location.href = btn.href;
-        });
+    while (parent.firstChild) {
+      wrapper.appendChild(parent.firstChild);
     }
+
+    parent.appendChild(wrapper);
+  });
+
+// Add onclick to each card div based on its own a.button link
+document
+  .querySelectorAll(`
+  .product-grid > div:not(.wrapper),
+  .product-grid > .wrapper > div,
+  .product-horizontal > div:not(.wrapper),
+  .product-horizontal > .wrapper > div,
+  .collection > div
+`)
+  .forEach(card => {
+    const button = card.querySelector('a.button');
+    if (!button) return;
+
+    const href = button.getAttribute('href');
+    if (!href) return;
+
+    // card.style.cursor = 'pointer';
+
+    card.onclick = function (e) {
+      if (e.target.closest('a, button')) return;
+      window.location.href = href;
+    };
+  });
 });
