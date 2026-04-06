@@ -1,404 +1,494 @@
 @font-face {
-    font-family: berthold;
-    src: url('https://images.rockymountainatvmc.com/images/rm/Heros/LP/Install-Center/berthold.otf') format("opentype");
+font-family: berthold;
+src: url('https://images.rockymountainatvmc.com/images/rm/Heros/LP/Install-Center/berthold.otf') format("opentype");
 }
+
 body,
 :is(div#NoNavBarPageContent, div.ux-content) {
-    margin: 0 !important; 
-    padding: 0 !important;
-    width: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+width: 100% !important;
 }
-div.headerSpacing{margin: 0;}
+
+div.headerSpacing {
+margin: 0;
+}
 
 /* RESET */
-    #rm-landing *, #rm-landing *::before, *::after {box-sizing: border-box;}
-    #rm-landing * {margin: 0; padding: 0; font: inherit;}
-    html {hanging-punctuation: first last;}
-    #rm-landing :is(img, picture, svg, video) {display: block; max-width: 100%;}
-    #rm-landing :is(h1, h2, h3, h4, h5, h6) {text-wrap: balance;}
-    #rm-landing :is(p, li) {text-wrap: pretty;}
+div#rm-landing *,
+#rm-landing *::before,
+*::after {
+box-sizing: border-box;
+}
+
+div#rm-landing * {
+margin: 0;
+padding: 0;
+font: inherit;
+}
+
+html {
+hanging-punctuation: first last;
+}
+
+div#rm-landing :is(img, picture, svg, video) {
+display: block;
+max-width: 100%;
+}
+
+div#rm-landing :is(h1, h2, h3, h4, h5, h6) {
+text-wrap: balance;
+}
+
+div#rm-landing :is(p, li) {
+text-wrap: pretty;
+}
+
 /* RESET END */
 
-#rm-landing :is(h1, h2, h3, h4, h5, h6) {
-    font-weight: bold;
-    line-height: 1.1;
-    margin-bottom: 0.25em;
+div#rm-landing :is(h1, h2, h3, h4, h5, h6) {
+font-weight: bold;
+letter-spacing: -0.02em;
+line-height: 1.1;
+margin-bottom: 0.25rem;
+text-transform: uppercase;
 }
-#rm-landing h1 {font-size: 2em}
-#rm-landing h2 {font-size: 1.5em}
-#rm-landing h3 {font-size: 1.17em}
-#rm-landing h4 {font-size: 1em}
-#rm-landing h5 {font-size: 0.83em}
-#rm-landing h6 {font-size: 0.67em}
-#rm-landing i {font-style: italic;}
 
-#rm-landing{
-    --content-width: 1200px;
-    --gap: 1rem;
-    --border-radius: 0.5rem;
+div#rm-landing h1 {
+font-size: var(--step-5);
+}
 
-    --black: rgb(0 0 0);
-    --red: #c00;
-    --grey: #333;
-    --light-grey: #555;
-    --blue: rgb(31 82 140);
-    --green: rgb(0 150 0);
-    --yellow: rgb(255, 255, 0);
+div#rm-landing h2 {
+font-size: var(--step-4);
+}
 
-    color: var(--light-grey);
-    display: grid;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 1.1rem;
-    grid-template-columns: [fullWidth-start] minmax(1rem, 1fr) [mainContent-start] minmax(1rem, var(--content-width)) [mainContent-end] minmax(1rem, 1fr) [fullWidth-end];
+div#rm-landing h3 {
+font-size: var(--step-3);
+}
 
-    & > * {grid-column: mainContent;}
+div#rm-landing h4 {
+font-size: var(--step-2);
 }
-#rm-landing header {
-    padding: 2rem 0;
-    place-items: center;
-    text-align: center;
-    &.cover-image {padding-top: 200px}
-    & h1 {font-size: clamp(3rem, 7vw, 6.5em) !important;}
-}
-#rm-landing :is(a.button, button:not(.x-arrow, :has(> .x-dots), #hamburger, .x-dots button)) {
-    background-color: var(--red);
-    background-image: linear-gradient(110deg, var(--red) 48%, white 48%, white 52%, black 52%);
-    background-position: left;
-    background-size: 300%;
-    border: none;
-    border-radius: var(--border-radius);
-    color: white !important;
-    display: block;
-    font-size: 1.35rem;
-    font-weight: bold;
-    height: fit-content;
-    margin-inline: auto;
-    padding: 1rem;
-    text-align: center;
-    text-decoration-color: transparent;
-    text-transform: uppercase;
-    text-underline-offset: -3px;
-    transition: 250ms;
-    width: fit-content;
 
-    &:is(:hover, :focus){
-        background-position: right;
-        outline: 1px solid var(--white);
-        text-decoration-color: var(--white);
-        text-underline-offset: 3px;
-        scale: 1.05;
-    }
+div#rm-landing h5 {
+font-size: var(--step-1);
 }
-#rm-landing p:has(~ a.button) {margin-bottom: 1rem;}
-#rm-landing section {
-    padding: 2.5rem 0;
-    & rm-container {align-items: center !important;}
-}
-#rm-landing .full-bleed {
-    background-color: var(--grey);
-    color: white;
-    display: grid;
-    grid-column: fullWidth;
-    grid-template-columns: inherit;
-    & rm-container > :is(h1, h2, h3, h4, h5, h6) {
-        font-family: "berthold", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
-        text-align: center;
-        text-transform: uppercase;
-    }
-    & rm-container > h1 {font-size: clamp(3rem, 5vw, 5rem);}
-    & rm-container > h2 {font-size: clamp(2rem, 5vw, 3vw);}
-    &.cover-image {
-        background-image: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / 0.95)), var(--cover-image);
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
 
-        &.overlay-black-grad {background-image: linear-gradient(to bottom, rgb(0 0 0 / 0.5), rgb(0 0 0 / 0.95)), var(--cover-image);}
-        &.overlay-black {background-image: linear-gradient(to bottom, rgb(0 0 0 / 0.85), rgb(0 0 0 / 0.85)), var(--cover-image);}
-        &.overlay-red-grad {background-image: linear-gradient(to bottom, rgb(204 0 0 / 0.5), rgb(204 0 0 / 0.95)), var(--cover-image);& rm-container > h1{text-shadow: 0 0 0.5rem rgb(0 0 0);}}
-    }
-    & rm-container {
-        grid-column: mainContent;
-        & .product-grid div > h1 {color: grey;}
-    }
+div#rm-landing h6 {
+font-size: var(--step-0);
 }
-#rm-landing .red {
-    background: var(--red);
-    & rm-container  a.button {
-        background-image: linear-gradient(110deg, white 48%, black 48%, black 52%, black 52%);
-        color: black;
-        &:hover {color: white;}
-    }
-}
-#rm-landing .black {
-    background: black;
-    color: white;
-    & a.button {
-        background-image: linear-gradient(110deg, var(--red) 48%, black 48%, black 52%, white 52%);
-        &:hover {color: black;}
-    }
-}
-#rm-landing .category rm-container {
-    text-align: center;
-    & > h1 {flex: 1 0 100%;}
-    & div {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        & img {aspect-ratio: 1.5/1;object-fit: cover;width: 100%;}
-        & a.button {width: 100%;}
-    }
-}
-#rm-landing .img-round rm-container img {aspect-ratio: 1/1 !important;border-radius: 50%;}
-/* #rm-landing .category.column-4 rm-container {
-    & img {aspect-ratio: 1/1;border-radius: 50%;}
-} */
-#rm-landing :is([class^="column-"], [class*=" column-"]) rm-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap);
-    place-content: center;
 
-    & > * {
-        padding: var(--gap);
-    }
+div#rm-landing i {
+font-style: italic;
 }
-#rm-landing .column-2 rm-container * {flex: 1 0 calc(50% - var(--gap));min-width: 300px;}
-#rm-landing .column-3 rm-container * {flex: 1 0 calc(33% - (var(--gap)));min-width: 250px;}
-#rm-landing .column-4 rm-container * {flex: 1 0 calc(25% - (var(--gap)));max-width: calc(var(--content-width) / 4 - var(--gap));}
 
-#rm-landing .product-grid rm-container > h1 {
-    display: display;
+/* div#rm-landing h1 {font-size: 3em;}
+div#rm-landing h2 {font-size: 2.5em;}
+div#rm-landing h3 {font-size: 2.17em;}
+div#rm-landing h4 {font-size: 2em;}
+div#rm-landing h5 {font-size: 1.83em;}
+div#rm-landing h6 {font-size: 1.67em;} */
+
+div#rm-landing {
+--border-radius: 0.25em;
+--content-width: 1300px;
+--gap: 1rem;
+
+--black: rgb(0 0 0);
+--red: #c00;
+--grey: #333;
+--light-grey: #555;
+--blue: rgb(31 82 140);
+--green: rgb(0 150 0);
+--yellow: rgb(255, 255, 0);
+
+--heading-font: "berthold", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+--step--1: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+--step-0: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+--step-1: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+--step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+--step-3: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+--step-4: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);
+--step-5: clamp(3rem, 2.5rem + 3.5vw, 4.5rem);
+
+color: var(--grey);
+display: grid;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+font-size: 1.4em !important;
+grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
+height: 100%;
+/* padding-bottom: 2rem; */
+
+&>* {
+  grid-column: mainContent;
+}
+
+& :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font);
+  letter-spacing: 0.02rem;
+}
+}
+
+div#rm-landing :is(section, article) {
+padding: 2rem;
+}
+
+div#rm-landing a {
+color: var(--red);
+}
+
+div#rm-landing :is(button, a.button) {
+--bg-initial: var(--red);
+--bg-hover: black;
+--text-initial: white;
+--text-hover: white;
+background-color: var(--initial-color);
+background-image: linear-gradient(110deg, var(--bg-initial) 48%, white 48%, white 52%, var(--bg-hover) 52%);
+background-position: left;
+background-size: 300%;
+border: 2px solid var(--bg-initial);
+border-radius: var(--border-radius);
+color: var(--text-initial) !important;
+display: block;
+font-size: 1.35rem;
+font-weight: bold;
+height: fit-content;
+padding: 0.85rem 1rem;
+text-align: center;
+text-decoration: underline;
+text-decoration-color: transparent;
+text-transform: uppercase;
+text-underline-offset: -3px;
+transition: 250ms;
+width: fit-content;
+
+&:is(:hover, :focus-visible) {
+  background-position: right;
+  border-color: var(--text-hover);
+  color: var(--text-hover) !important;
+  text-decoration-color: var(--text-hover);
+  text-underline-offset: 3px;
+  scale: 1.05;
+}
+}
+
+div#rm-landing p:has(~ :is(button, a.button)) {
+margin-bottom: 1rem;
+}
+
+div#rm-landing header {
+text-align: center;
+padding: 2rem 0;
+
+& h1 {
+  font-size: clamp(5rem, 7vw, 6.5em) !important;
+}
+
+&:first-of-type {
+  padding-top: 10rem;
+}
+}
+
+div#rm-landing img {
+border-radius: 1rem;
+}
+
+div#rm-landing .img-round img {
+border-radius: 100% !important;
+}
+
+div#rm-landing nav {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+gap: var(--gap);
+justify-content: space-around;
+padding: 1.5rem 0;
+place-self: center;
+width: fit-content;
+
+& a::after {
+  content: "" !important;
+}
+}
+
+div#rm-landing .center {
+margin-inline: auto;
+text-align: center;
+
+& :is(button, a.button) {
+  margin-inline: auto;
+}
+}
+
+div#rm-landing .right {
+margin-left: auto;
+text-align: right;
+}
+
+div#rm-landing :is([class^="column-"], [class*=" column-"]) {
+display: flex;
+flex-wrap: wrap;
+gap: 2rem var(--gap);
+place-content: center;
+place-items: center;
+}
+
+div#rm-landing .column-2>* {
+flex: 1 0 calc(50% - var(--gap));
+max-width: calc(var(--content-width) / 2 - var(--gap) * 1.5);
+min-width: 250px;
+}
+
+div#rm-landing .column-3>* {
+flex: 1 0 calc(33% - (var(--gap)));
+max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
+min-width: 250px;
+}
+
+div#rm-landing .column-4>* {
+flex: 1 0 calc(25% - (var(--gap)));
+max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
+min-width: 170px;
+}
+
+div#rm-landing .full-bleed {
+display: grid !important;
+grid-column: fullWidth;
+grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
+
+&>* {
+  grid-column: mainContent;
+}
+
+&> :is(button, a.button) {
+  margin-left: 1em;
+}
+
+& :is(.product-grid, .product-horizontal, .gallery) {
+  justify-content: space-around;
+}
+}
+
+div#rm-landing .black {
+background: black;
+color: white;
+& :is(button, a.button):not(:is(.product-grid, .product-horizontal) a.button) {
+  --bg-hover: white;
+  --text-hover: black;
+}
+}
+div#rm-landing .red {
+background: var(--red);
+color: white;
+& :is(button, a.button) {
+  --bg-initial: black;
+  --bg-hover: white;
+  --text-hover: black;
+}
+}
+div#rm-landing .grey {
+background: var(--grey);
+color: white;
+& :is(button, a.button) {
+  --bg-hover: white;
+  --text-hover: black;
+}
+}
+
+div#rm-landing :is(section.gallery:not(:has(> div.wrapper)), section.gallery:has(> div.wrapper) > div.wrapper) {
+display: grid;
+gap: var(--gap) !important;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+justify-content: space-around;
+place-items: center;
+
+& :is(img, div:not(.wrapper)){
+  aspect-ratio: 1;
+  box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 0.15);
+  min-width: 120px;
+  width: 100%;
+  &.gallery-half {
+    aspect-ratio: 2.05/1;
+    grid-column: span 2;
+    object-fit: cover;
+  }
+  &.gallery-full {
+    aspect-ratio: 3/1;
     grid-column: 1 / -1;
-    opacity: 0.5;
+    object-fit: cover;
+    @media (max-width: 750px) {aspect-ratio: 2/1;}
+  }
 }
-#rm-landing .product-grid rm-container div {
-    background-color: white;
-    border: 1px solid var(--grey);
-    border-radius: var(--border-radius);
-    box-shadow: 0 0.25rem 0.65rem -0.25rem rgb(0 0 0 / 0.25);
-    display: grid;
-    gap: 0.5rem 0.25rem;
-    grid-template-areas: "logo" "image" "button" "price" "title" "details";
-    isolation: isolate;
-    padding: 1rem;
-    position: relative;
-    &::before {transition: transform 250ms;}
-    & > * {margin: 0;text-transform: uppercase;}
-    & > img:first-of-type {
-        display: block;
-        grid-area: logo;
-        justify-self: center;
-        width: 30%;
-    }
-    & > img:last-of-type {
-        grid-area: image;
-        width: 100%;z-index: -1;}
-    & > h1 {
-        font-size: clamp(0.85rem, 1.5vw, 1.25rem);
-        grid-area: title;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        line-clamp: 3;
-        color: var(--light-grey);
-        display: -webkit-box;
-        overflow: hidden;
-    }
-    & > p {
-        color: var(--red);
-        font-size: clamp(1em, 1.5vw, 1.25em);
-        font-weight: bold;
-        grid-area: price;
-    }
-    & > i {color: #666;font-size: 0.85em;grid-area: details;}
-    & > a.button {grid-area: button;width: 100% !important;}
-    /* &:is(.best-seller, .closeout, .limited, .deal)&:hover::before{transform: rotate(-1.5deg) scale(1.05);} */
-    &:is(.best-seller, .closeout, .limited, .deal)::before{
-        clip-path: polygon(0% 0%, 100% 0%, 90% 50%, 100% 100%, 0% 99%);
-        color: white;
-        display: block;
-        font-size: clamp(0.65em, 1.5vw, 1em);;
-        font-weight: bold;
-        grid-area: image;
-        top: -0.125rem;
-        left: -1.35rem;
-        padding: 0.35rem 1.25rem 0.35rem 0.75rem;
-        position: absolute;
-        text-transform: uppercase;
-    }
-    &.best-seller::before {content: "Best Seller";background-color: var(--red);}
-    &.closeout::before {content: "closeout";background-color: var(--blue);}
-    &.limited::before {content: "limited stock";background-color: var(--green);}
-    &.deal::before {content: "deal";background-color: var(--yellow);color: black;}
+& div:not(.wrapper) {
+  background-color: white;
+  background-image: linear-gradient(to top, color-mix(in hsl, var(--overlay-color), transparent 5%), color-mix(in hsl, var(--overlay-color), transparent 75%)), var(--cover-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 1rem;
+  color: white;
+  display: grid;
+  font-weight: bold;
+  place-content: center;
+  text-align: center;
+  text-transform: uppercase;
+}
+@media (max-width: 750px) {
+  & {grid-template-columns: repeat(2, 1fr) !important;}
+}
 }
 
-#rm-landing :is(nav, nav rm-container) {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--gap);
-    padding: 1rem 0;
-    place-content: center;
-    place-items: center;
-    width: 100%;
-    & a {margin-inline: 0 !important;}
+div#rm-landing .cover-image {
+background-image: linear-gradient(rgb(0 0 0 / 0.25) 50%, rgb(0 0 0 / 0.5)), var(--cover-image);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+color: black !important;
+
+&.black {
+  background-image: linear-gradient(rgb(0 0 0 / 0.25) 50%, black), var(--cover-image);
 }
 
-#rm-landing .center {justify-items: center;margin-inline: auto;text-align: center;}
-
-
-#rm-landing :is(.product-grid, .category) div {transition: scale 250ms;}
-#rm-landing :is(.product-grid, .category) div:has(> a.button):hover {scale: 1.035;}
-
-@media (max-width: 800px) {
-    #rm-landing .column-4 rm-container > * {flex: 0 0 calc(50% - var(--gap));}
+&.red {
+  background-image: linear-gradient(rgb(204 0 0 / 0.25) 50%, var(--red)), var(--cover-image);
 }
 
-/* SLIDER */
-.x-slider {
-    --h: 420px;
-    --w: 80vw;
-    --max: 900px;
-    --gap: 1rem;
-    align-items: stretch;
-    color: white !important;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    width: 100%;
+&.grey {
+  background-image: linear-gradient(rgb(51 51 51 / 0.25) 50%, var(--grey)), var(--cover-image);
 }
-.full-bleed rm-container:has(.x-slider[data-slide-width|="100vw"]) {grid-column: fullWidth !important;}
-.x-slider>* {min-width: 0;}
-.x-slider .x-track {min-width: 0;}
-.x-track {
-    display: flex;
-    gap: var(--gap);
-    height: var(--h);
-    /* Use bleow for aspect-ratio: 1/1 */
-    /* height: auto; */
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    padding-inline: var(--edge-pad);
-    scrollbar-width: none;
 }
-.x-track::-webkit-scrollbar {display: none;}
-.slide {
-    --outer-padding: 1.25rem;
-    align-items: center;
-    /* Change .x-track height */
-    /* aspect-ratio: 1 / 1; */
-    border-radius: 12px;
-    display: grid;
-    flex: 0 0 auto;
-    gap: 0.5rem;
-    grid-template-areas: ". . . ." ". heading heading ." ". text button ." ". . . .";
-    grid-template-columns: var(--outer-padding) 1fr auto var(--outer-padding);
-    grid-template-rows: minmax(6rem, 1fr) auto auto var(--outer-padding);
-    position: relative;
-    isolation: isolate;
+
+div#rm-landing .product-grid,
+div#rm-landing .product-grid div.wrapper {
+display: flex;
+flex-wrap: wrap;
+gap: 2rem var(--gap) !important;
+padding: 1.5rem 0 !important;
+place-content: center;
+place-items: center;
+
+& div:not(.wrapper) {
+  background-color: white;
+  border: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 0.25);
+  cursor: pointer;
+  display: grid;
+  flex: 1 0 calc(25% - (var(--gap)));
+  max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
+  min-width: 150px;
+  gap: 0.75rem;
+  grid-template-areas: "brand" "product" "button" "price" "title" "details";
+  grid-template-rows: repeat(2, auto) 25px repeat(3, auto);
+  padding: 1rem;
+  transition: scale 250ms;
+
+  &>*:not(a) {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  & img:first-of-type {
+    grid-area: brand;
+    place-self: center;
+    max-width: 80px;
+  }
+
+  & img:last-of-type {
+    grid-area: product;
+  }
+
+  & :is(h1, h2, h3, h4, h5, h6) {
+    color: var(--grey);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: var(--step-0);
+    grid-area: title;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    scroll-snap-align: center;
-    width: min(var(--w), var(--max));
-    & img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        grid-area: 1 / 1 / -1 / -1;
-        z-index: -2;
-    }
-    & h1, & p {color: var(--white);margin: 0;}
-    & h1:not(:has(+ p)) {text-align: center;grid-area: text;}
-    & h1 {grid-area: heading;text-shadow: 0 0 1rem color-mix(in hsl, var(--black) 100%, transparent 10%);}
-    & p:not(:has(+ :is(button, a.button))) {grid-area: 3 / 2 / 4 / 4;;}
-    & p {grid-area: text;}
-    & :is(button, a.button) {grid-area: button;margin-inline: auto;}
-    & p + :is(button, a.button) {grid-area: button;height: fit-content;}
-    & button:not(p + button):not(h1 + button) {grid-column: 2 / 4 !important;grid-row: 3 !important;}
-    &::after {
-        content: "";
-        background: linear-gradient(to bottom, transparent, var(--black), var(--black));
-        display: block;
-        height: 100%;
-        grid-area: 2 / 1 / 5 / 5;
-        position: absolute;
-        width: 100%;
-        z-index: -1;
-    };
-    &.top {
-        grid-template-areas: ". . . ." ". heading heading ." ". text button ." ". . . .";
-        grid-template-columns: var(--outer-padding) 1fr auto var(--outer-padding);
-        grid-template-rows: minmax(6rem, 1fr) auto auto var(--outer-padding);
-    }
+    width: 100%;
+  }
+
+  & p {
+    color: var(--red);
+    font-weight: bold;
+    grid-area: price;
+    padding: 0.5rem 0;
+  }
+
+  & i {
+    color: var(--light-grey);
+    font-size: var(--step--1);
+    grid-area: details;
+  }
+
+  & a.button {
+    grid-area: button;
+    margin-inline: auto;
+    transform: translateY(-25px);
+    width: 80%;
+  }
+
+  /* &:has(a.button:hover) {scale: 1.025;} */
 }
-.scroll-snap-center {scroll-snap-align: center;}
-.x-arrow {
-    backdrop-filter: blur(5px);
-    background: rgba(0, 0, 0, 0.5);
-    border: none;
-    border-radius: 999px;
-    color: #fff;
-    cursor: pointer;
-    position: absolute;
-    height: 48px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 48px;
-    transition: scale 250ms, background-color 250ms;
-    z-index: 5;
-    &:hover {background-color: var(--black);scale: 1.05;}
-    &:active {scale: 0.95;}
+
+&.product-horizontal div:not(.wrapper) {
+  flex: 1 0 calc(33% - (var(--gap)));
+  max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
+  min-width: 250px;
+  grid-template-columns: 50% 1fr;
+  grid-template-areas: "product brand" "product price" "product title" "product details" "button button";
+  grid-template-rows: repeat(4, auto) 25px;
+  place-items: center;
+
+  & a.button {
+    transform: translateY(15px);
+  }
 }
-.x-arrow:disabled {
-    cursor: default;
-    opacity: 0;
-    pointer-events: none;
 }
-.x-arrow.left {left: .5rem;}
-.x-arrow.right {right: .5rem;}
-.x-dots {
-    display: flex;
-    justify-content: center;
-    gap: .4rem;
-    margin-top: .5rem !important;
+
+div#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6))+ :is(p, h1, h2, h3, h4, h5, h6) {
+padding-top: 1rem;
 }
-.x-dots button {
-    --button-color: rgba(50 50 50);
-    background: var(--button-color);
-    border: 2px solid transparent;
-    border-radius: 999px;
-    cursor: pointer;
-    height: 16px;
-    width: 16px;
+
+div#rm-landing .collection {
+
+/* gap: 2rem; */
+& img {
+  margin-inline: auto;
+  width: 80%;
 }
-.full-bleed .x-dots button {--button-color: rgb(190 190 190);}
-.x-dots button.active {
-    background: var(--red);
-    border-color: var(--button-color);
 }
-.x-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: space-around;
-    margin-inline: auto !important;
-    padding: 1rem 0 !important;
-    width: fit-content;
-    & button {display: inline-block !important;}
+
+div#rm-landing :is(.product-grid > div:not(.wrapper),
+.product-grid > .wrapper > div,
+.product-horizontal > div:not(.wrapper),
+.product-horizontal > .wrapper > div,
+.collection > div) {
+transition: scale 250ms;
+
+&:hover {
+  scale: 1.015
 }
-.x-dots, .x-progress {display: none;}
-/* Only show if enabled */
-.x-slider[data-dots] .x-dots {display: flex;}
-@media (max-width: 768px) {
-    .slide {
-        gap: 0.5rem;
-        grid-template-columns: var(--outer-padding) 1fr var(--outer-padding) !important;
-        grid-template-rows: minmax(6rem, 1fr) repeat(3, auto) var(--outer-padding) !important;
-        grid-template-areas: ". . ." ". heading ." ". text ." ". button ." ". . ." !important;
-        min-width: 280px !important;
-        & img {grid-area: 1 / 1 / -1 / -1;}
-        /* & h1 {text-shadow: 0 0 1rem color-mix(in hsl, var(--black) 100%, transparent 10%);} */
-        &::after {grid-area: 2 / 1 / -1 / -1;}
-    }
+}
+
+div#rm-landing .space {
+display: block;
+height: 5rem;
+}
+
+/* SLIDER STYLING */
+div#rm-landing :is(section, article).slider {
+outline: 1px solid lime;
+grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
+grid-template-columns: fullWidth;
+
+&>div {
+  min-height: 100px;
+}
 }
