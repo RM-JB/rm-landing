@@ -92,7 +92,7 @@ div#rm-landing h6 {font-size: 1.67em;} */
 div#rm-landing {
 --border-radius: 0.25em;
 --content-width: 1300px;
---gap: 1rem;
+--gap: 1.5rem;
 
 --black: rgb(0 0 0);
 --red: #c00;
