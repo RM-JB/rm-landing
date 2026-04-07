@@ -391,6 +391,7 @@ place-items: center;
   }
 
   & img:first-of-type {
+    border-radius: 0 !important;
     grid-area: brand;
     place-self: center;
     max-width: 80px;
