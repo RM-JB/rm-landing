@@ -47,47 +47,21 @@ div#rm-landing :is(p, li) {
 /* RESET END */
 
 div#rm-landing :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--heading-font);
   font-weight: bold;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.05rem;
   line-height: 1.1;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2em;
   text-transform: uppercase;
 }
+div#rm-landing h1 {font-size: var(--step-5);}
+div#rm-landing h2 {font-size: var(--step-4);}
+div#rm-landing h3 {font-size: var(--step-3);}
+div#rm-landing h4 {font-size: var(--step-2);}
+div#rm-landing h5 {font-size: var(--step-1);}
+div#rm-landing h6 {font-size: var(--step-0);}
 
-div#rm-landing h1 {
-  font-size: var(--step-5);
-}
-
-div#rm-landing h2 {
-  font-size: var(--step-4);
-}
-
-div#rm-landing h3 {
-  font-size: var(--step-3);
-}
-
-div#rm-landing h4 {
-  font-size: var(--step-2);
-}
-
-div#rm-landing h5 {
-  font-size: var(--step-1);
-}
-
-div#rm-landing h6 {
-  font-size: var(--step-0);
-}
-
-div#rm-landing i {
-  font-style: italic;
-}
-
-/* div#rm-landing h1 {font-size: 3em;}
-  div#rm-landing h2 {font-size: 2.5em;}
-  div#rm-landing h3 {font-size: 2.17em;}
-  div#rm-landing h4 {font-size: 2em;}
-  div#rm-landing h5 {font-size: 1.83em;}
-  div#rm-landing h6 {font-size: 1.67em;} */
+div#rm-landing i {font-style: italic;}
 
 div#rm-landing {
   --border-radius: 0.25em;
@@ -97,7 +71,7 @@ div#rm-landing {
   --black: rgb(0 0 0);
   --red: #c00;
   --grey: #333;
-  --light-grey: #555;
+  --light-grey: #777;
   --blue: rgb(31 82 140);
   --green: rgb(0 150 0);
   --yellow: rgb(255, 255, 0);
@@ -119,15 +93,7 @@ div#rm-landing {
   grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
   height: 100%;
   /* padding-bottom: 2rem; */
-
-  &>* {
-    grid-column: mainContent;
-  }
-
-  & :is(h1, h2, h3, h4, h5, h6) {
-    font-family: var(--heading-font);
-    letter-spacing: 0.02rem;
-  }
+  &>* {grid-column: mainContent;}
 }
 
 div#rm-landing :is(section, article) {
@@ -171,6 +137,9 @@ div#rm-landing :is(button, a.button) {
     text-underline-offset: 3px;
     scale: 1.05;
   }
+}
+div#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){
+  margin-top: 1rem !important;
 }
 
 div#rm-landing p:has(~ :is(button, a.button)) {
@@ -282,20 +251,20 @@ div#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrappe
   place-items: center !important;
 }
 div#rm-landing .column-2>div.wrapper>*,
-div#rm-landing .column-2:is(:not(:has(>div.wrapper)))>* {
+div#rm-landing .column-2:not(:has(>div.wrapper))>* {
   flex: 1 0 calc(50% - var(--gap));
   max-width: calc(var(--content-width) / 2 - var(--gap) * 1.5);
   min-width: 250px;
 }
 div#rm-landing .column-3>div.wrapper>*,
-div#rm-landing .column-3:is(:not(:has(>div.wrapper)))>* {
+div#rm-landing .column-3:not(:has(>div.wrapper))>* {
   flex: 1 0 calc(33% - (var(--gap)));
   max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
   min-width: 250px;
 }
 
 div#rm-landing .column-4>div.wrapper>*,
-div#rm-landing .column-4:is(:not(:has(>div.wrapper)))>* {
+div#rm-landing .column-4:not(:has(>div.wrapper))>* {
   flex: 1 0 calc(25% - (var(--gap)));
   max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
   min-width: 170px;
@@ -483,6 +452,14 @@ div#rm-landing .space {
   display: block;
   height: 5rem;
 }
+div#rm-landing .divider {
+  border-top: 1px solid var(--light-grey);
+  height: 1px;
+  margin-block: 1rem;
+  margin-inline: auto;
+  opacity: 0.5;
+  width: 85%;
+}
 
 /* SLIDER STYLING */
 div#rm-landing :is(section, article).slider {
@@ -492,5 +469,17 @@ div#rm-landing :is(section, article).slider {
 
   &>div {
     min-height: 100px;
+  }
+}
+div#rm-landing :is(h1, h2, h3, h4, h5, h6):has(+ .sub-heading) + .sub-heading {
+  margin-top: -0.75rem;
+}
+div#rm-landing .sub-heading {
+  color: var(--light-grey);
+  display: block;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  &:has(+ p) {
+    padding-bottom: 1rem !important;
   }
 }
