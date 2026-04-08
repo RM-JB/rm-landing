@@ -183,7 +183,6 @@ div#rm-landing nav {
 }
 
 div#rm-landing .center {
-  margin-inline: auto;
   text-align: center;
 
   & :is(button, a.button) {
@@ -454,8 +453,9 @@ div#rm-landing .space {
 }
 div#rm-landing .divider {
   border-top: 1px solid var(--light-grey);
-  height: 1px;
-  margin-block: 1rem;
+  height: 10px;
+  padding-bottom: 1rem;
+  margin-top: 1rem;
   margin-inline: auto;
   opacity: 0.5;
   width: 85%;
