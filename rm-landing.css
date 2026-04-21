@@ -15,13 +15,13 @@ div.headerSpacing {
 }
 
 /* RESET */
-div#rm-landing *,
+main#rm-landing *,
 #rm-landing *::before,
 *::after {
   box-sizing: border-box;
 }
 
-div#rm-landing * {
+main#rm-landing * {
   margin: 0;
   padding: 0;
   font: inherit;
@@ -31,22 +31,22 @@ html {
   hanging-punctuation: first last;
 }
 
-div#rm-landing :is(img, picture, svg, video) {
+main#rm-landing :is(img, picture, svg, video) {
   display: block;
   max-width: 100%;
 }
 
-div#rm-landing :is(h1, h2, h3, h4, h5, h6) {
+main#rm-landing :is(h1, h2, h3, h4, h5, h6) {
   text-wrap: balance;
 }
 
-div#rm-landing :is(p, li) {
+main#rm-landing :is(p, li) {
   text-wrap: pretty;
 }
 
 /* RESET END */
 
-div#rm-landing :is(h1, h2, h3, h4, h5, h6) {
+main#rm-landing :is(h1, h2, h3, h4, h5, h6) {
   font-family: var(--heading-font);
   font-weight: bold;
   letter-spacing: 0.05rem;
@@ -54,16 +54,16 @@ div#rm-landing :is(h1, h2, h3, h4, h5, h6) {
   margin-bottom: 0.2em;
   text-transform: uppercase;
 }
-div#rm-landing h1 {font-size: var(--step-5);}
-div#rm-landing h2 {font-size: var(--step-4);}
-div#rm-landing h3 {font-size: var(--step-3);}
-div#rm-landing h4 {font-size: var(--step-2);}
-div#rm-landing h5 {font-size: var(--step-1);}
-div#rm-landing h6 {font-size: var(--step-0);}
+main#rm-landing h1 {font-size: var(--step-5);}
+main#rm-landing h2 {font-size: var(--step-4);}
+main#rm-landing h3 {font-size: var(--step-3);}
+main#rm-landing h4 {font-size: var(--step-2);}
+main#rm-landing h5 {font-size: var(--step-1);}
+main#rm-landing h6 {font-size: var(--step-0);}
 
-div#rm-landing i {font-style: italic;}
+main#rm-landing i {font-style: italic;}
 
-div#rm-landing {
+main#rm-landing {
   --border-radius: 0.25em;
   --content-width: 1300px;
   --gap: 1.5rem;
@@ -96,15 +96,15 @@ div#rm-landing {
   &>* {grid-column: mainContent;}
 }
 
-div#rm-landing :is(section, article) {
+main#rm-landing :is(section, article) {
   padding: 2rem;
 }
 
-div#rm-landing a {
+main#rm-landing a {
   color: var(--red);
 }
 
-div#rm-landing :is(button, a.button) {
+main#rm-landing :is(button, a.button) {
   --bg-initial: var(--red);
   --bg-hover: black;
   --text-initial: white;
@@ -138,15 +138,15 @@ div#rm-landing :is(button, a.button) {
     scale: 1.05;
   }
 }
-div#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){
+main#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){
   margin-top: 1rem !important;
 }
 
-div#rm-landing p:has(~ :is(button, a.button)) {
+main#rm-landing p:has(~ :is(button, a.button)) {
   margin-bottom: 1rem;
 }
 
-div#rm-landing header {
+main#rm-landing header {
   text-align: center;
   padding: 2rem 0;
 
@@ -159,15 +159,15 @@ div#rm-landing header {
   }
 }
 
-div#rm-landing img {
+main#rm-landing img {
   border-radius: 1rem;
 }
 
-div#rm-landing .img-round img {
+main#rm-landing .img-round img {
   border-radius: 100% !important;
 }
 
-div#rm-landing nav {
+main#rm-landing nav {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -182,7 +182,7 @@ div#rm-landing nav {
   }
 }
 
-div#rm-landing .center {
+main#rm-landing .center {
   text-align: center;
 
   & :is(button, a.button) {
@@ -190,12 +190,12 @@ div#rm-landing .center {
   }
 }
 
-div#rm-landing .right {
+main#rm-landing .right {
   margin-left: auto;
   text-align: right;
 }
 
-div#rm-landing .full-bleed {
+main#rm-landing .full-bleed {
   display: grid !important;
   grid-column: fullWidth;
   grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
@@ -214,7 +214,7 @@ div#rm-landing .full-bleed {
   }
 }
 
-div#rm-landing .black {
+main#rm-landing .black {
   background: black;
   color: white;
   & :is(button, a.button):not(:is(.product-grid, .product-horizontal) a.button) {
@@ -222,7 +222,7 @@ div#rm-landing .black {
     --text-hover: black;
   }
 }
-div#rm-landing .red {
+main#rm-landing .red {
   background: var(--red);
   color: white;
   & :is(button, a.button) {
@@ -231,7 +231,7 @@ div#rm-landing .red {
     --text-hover: black;
   }
 }
-div#rm-landing .grey {
+main#rm-landing .grey {
   background: var(--grey);
   color: white;
   & :is(button, a.button) {
@@ -241,35 +241,35 @@ div#rm-landing .grey {
 }
 
 
-div#rm-landing :is([class^="column-"], [class*=" column-"]):has(>div.wrapper)>div.wrapper,
-div#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapper)) {
+main#rm-landing :is([class^="column-"], [class*=" column-"]):has(>div.wrapper)>div.wrapper,
+main#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapper)) {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 2rem var(--gap) !important;
   place-content: center !important;
   place-items: center !important;
 }
-div#rm-landing .column-2>div.wrapper>*,
-div#rm-landing .column-2:not(:has(>div.wrapper))>* {
+main#rm-landing .column-2>div.wrapper>*,
+main#rm-landing .column-2:not(:has(>div.wrapper))>* {
   flex: 1 0 calc(50% - var(--gap));
   max-width: calc(var(--content-width) / 2 - var(--gap) * 1.5);
   min-width: 250px;
 }
-div#rm-landing .column-3>div.wrapper>*,
-div#rm-landing .column-3:not(:has(>div.wrapper))>* {
+main#rm-landing .column-3>div.wrapper>*,
+main#rm-landing .column-3:not(:has(>div.wrapper))>* {
   flex: 1 0 calc(33% - (var(--gap)));
   max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
   min-width: 250px;
 }
 
-div#rm-landing .column-4>div.wrapper>*,
-div#rm-landing .column-4:not(:has(>div.wrapper))>* {
+main#rm-landing .column-4>div.wrapper>*,
+main#rm-landing .column-4:not(:has(>div.wrapper))>* {
   flex: 1 0 calc(25% - (var(--gap)));
   max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
   min-width: 170px;
 }
 
-div#rm-landing :is(section.gallery:not(:has(>div.wrapper)), section.gallery:has(>div.wrapper)>div.wrapper) {
+main#rm-landing :is(section.gallery:not(:has(>div.wrapper)), section.gallery:has(>div.wrapper)>div.wrapper) {
   display: grid;
   gap: var(--gap) !important;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -312,7 +312,7 @@ div#rm-landing :is(section.gallery:not(:has(>div.wrapper)), section.gallery:has(
   }
 }
 
-div#rm-landing .cover-image {
+main#rm-landing .cover-image {
   background-image: linear-gradient(rgb(0 0 0 / 0.25) 50%, rgb(0 0 0 / 0.5)), var(--cover-image);
   background-position: center;
   background-repeat: no-repeat;
@@ -332,8 +332,8 @@ div#rm-landing .cover-image {
   }
 }
 
-div#rm-landing .product-grid,
-div#rm-landing .product-grid div.wrapper {
+main#rm-landing .product-grid,
+main#rm-landing .product-grid div.wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem var(--gap) !important;
@@ -424,18 +424,18 @@ div#rm-landing .product-grid div.wrapper {
   }
 }
 
-div#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6))+ :is(p, h1, h2, h3, h4, h5, h6) {
+main#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6))+ :is(p, h1, h2, h3, h4, h5, h6) {
   padding-top: 1rem;
 }
 
-div#rm-landing .collection {
+main#rm-landing .collection {
   & img {
     margin-inline: auto;
     width: 80%;
   }
 }
 
-div#rm-landing :is(.product-grid>div:not(.wrapper),
+main#rm-landing :is(.product-grid>div:not(.wrapper),
   .product-grid>.wrapper>div,
   .product-horizontal>div:not(.wrapper),
   .product-horizontal>.wrapper>div,
@@ -447,11 +447,11 @@ div#rm-landing :is(.product-grid>div:not(.wrapper),
   }
 }
 
-div#rm-landing .space {
+main#rm-landing .space {
   display: block;
   height: 5rem;
 }
-div#rm-landing .divider {
+main#rm-landing .divider {
   border-top: 1px solid var(--light-grey);
   height: 10px;
   padding-bottom: 1rem;
@@ -462,7 +462,7 @@ div#rm-landing .divider {
 }
 
 /* SLIDER STYLING */
-div#rm-landing :is(section, article).slider {
+main#rm-landing :is(section, article).slider {
   outline: 1px solid lime;
   grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
   grid-template-columns: fullWidth;
@@ -471,10 +471,10 @@ div#rm-landing :is(section, article).slider {
     min-height: 100px;
   }
 }
-div#rm-landing :is(h1, h2, h3, h4, h5, h6):has(+ .sub-heading) + .sub-heading {
+main#rm-landing :is(h1, h2, h3, h4, h5, h6):has(+ .sub-heading) + .sub-heading {
   margin-top: -0.75rem;
 }
-div#rm-landing .sub-heading {
+main#rm-landing .sub-heading {
   color: var(--light-grey);
   display: block;
   letter-spacing: 0.1rem;
