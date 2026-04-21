@@ -483,3 +483,70 @@ main#rm-landing .sub-heading {
     padding-bottom: 1rem !important;
   }
 }
+
+
+/* YT VIDEO STYLING */
+  #rm-landing .yt-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      transition: scale 250ms;
+
+      &:hover .yt-play-btn {
+          scale: 1.05;
+      }
+  }
+
+  #rm-landing .yt-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+  }
+
+  #rm-landing .yt-overlay {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: opacity 0.3s ease;
+      z-index: 2;
+  }
+
+  #rm-landing .yt-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+  }
+
+  #rm-landing .yt-play-btn {
+      border-radius: 1rem;
+      display: block;
+      width: 100px;
+      height: 72px;
+      background: rgb(255 0 0);
+      border: none;
+      position: relative;
+      transition: scale 350ms;
+      cursor: pointer;
+  }
+
+  #rm-landing .yt-play-btn::before {
+      content: "";
+      position: absolute;
+      left: 40px;
+      top: 20px;
+      border-style: solid;
+      border-width: 16px 0 16px 26px;
+      border-color: transparent transparent transparent white;
+  }
+
+  @media (max-width: 800px) {
+      #rm-landing .column-4 rm-container>* {
+          flex: 0 0 calc(50% - var(--gap));
+      }
+  }
+
+  /* YT VIDEO STYLING END */
