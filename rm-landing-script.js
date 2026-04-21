@@ -55,3 +55,41 @@ document.addEventListener('DOMContentLoaded', () =>{
       };
     });
 });
+
+//YOUTUBE
+let ytPlayers = [];
+
+    function onYouTubeIframeAPIReady() {
+        document.querySelectorAll(".yt-wrapper").forEach(wrapper => {
+            const videoId = wrapper.dataset.videoId;
+            const overlay = wrapper.querySelector(".yt-overlay");
+            const playerEl = wrapper.querySelector(".yt-player");
+
+            // Set thumbnail
+            overlay.style.backgroundImage =
+                `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`;
+
+            const player = new YT.Player(playerEl, {
+                videoId,
+                playerVars: {
+                    rel: 0,
+                    modestbranding: 1
+                },
+                events: {
+                    onStateChange: event => {
+                        // ENDED
+                        if (event.data === YT.PlayerState.ENDED) {
+                            overlay.classList.remove("hidden");
+                        }
+                    }
+                }
+            });
+
+            ytPlayers.push(player);
+
+            overlay.addEventListener("click", () => {
+                overlay.classList.add("hidden");
+                player.playVideo();
+            });
+        });
+    }
