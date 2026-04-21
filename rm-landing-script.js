@@ -59,37 +59,85 @@ document.addEventListener('DOMContentLoaded', () =>{
 //YOUTUBE
 let ytPlayers = [];
 
-    function onYouTubeIframeAPIReady() {
-        document.querySelectorAll(".yt-wrapper").forEach(wrapper => {
-            const videoId = wrapper.dataset.videoId;
-            const overlay = wrapper.querySelector(".yt-overlay");
-            const playerEl = wrapper.querySelector(".yt-player");
+function onYouTubeIframeAPIReady() {
+    document.querySelectorAll(".yt-wrapper").forEach(wrapper => {
+        const videoId = wrapper.dataset.videoId;
+        const overlay = wrapper.querySelector(".yt-overlay");
+        const playerEl = wrapper.querySelector(".yt-player");
 
-            // Set thumbnail
-            overlay.style.backgroundImage =
-                `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`;
+        // Set thumbnail
+        overlay.style.backgroundImage =
+            `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`;
 
-            const player = new YT.Player(playerEl, {
-                videoId,
-                playerVars: {
-                    rel: 0,
-                    modestbranding: 1
-                },
-                events: {
-                    onStateChange: event => {
-                        // ENDED
-                        if (event.data === YT.PlayerState.ENDED) {
-                            overlay.classList.remove("hidden");
-                        }
+        const player = new YT.Player(playerEl, {
+            videoId,
+            playerVars: {
+                rel: 0,
+                modestbranding: 1
+            },
+            events: {
+                onStateChange: event => {
+                    // ENDED
+                    if (event.data === YT.PlayerState.ENDED) {
+                        overlay.classList.remove("hidden");
                     }
                 }
-            });
-
-            ytPlayers.push(player);
-
-            overlay.addEventListener("click", () => {
-                overlay.classList.add("hidden");
-                player.playVideo();
-            });
+            }
         });
-    }
+
+        ytPlayers.push(player);
+
+        overlay.addEventListener("click", () => {
+            overlay.classList.add("hidden");
+            player.playVideo();
+        });
+    });
+}
+
+// PRICING
+(async () => {
+
+  const els = [...document.querySelectorAll("[data-link]")];
+  const parser = new DOMParser();
+
+  const groups = {};
+
+  els.forEach(el => {
+      const url = el.dataset.link;
+      (groups[url] ??= []).push(el);
+  });
+
+  for (const url in groups) {
+
+      try {
+
+          const res = await fetch(url, { cache: "no-store" });
+          const doc = parser.parseFromString(await res.text(), "text/html");
+
+          const low = doc.querySelector("[itemprop='lowPrice']");
+          const high = doc.querySelector("[itemprop='highPrice']");
+          const price = doc.querySelector("[itemprop='price']");
+
+          let text = "";
+
+          if (low && high) {
+              text = `$${low.content} – $${high.content}`;
+          }
+          else if (price) {
+              text = `$${price.content || price.textContent.trim()}`;
+          }
+          else {
+              text = "Price unavailable";
+          }
+
+          groups[url].forEach(el => el.textContent = text);
+
+      } catch (e) {
+          groups[url].forEach(el => el.textContent = "—");
+      }
+
+  }
+
+})();
+
+// <p class="product-price" data-link="PRODUCTLINK" data-target="[itemprop='price']"></p>
