@@ -32,29 +32,34 @@ document.addEventListener('DOMContentLoaded', () =>{
     });
 
   // Add onclick to each card div based on its own a.button link
-  document
-    .querySelectorAll(`
-    .product-grid>div:not(.wrapper),
-    .product-grid>.wrapper>div,
-    .product-horizontal>div:not(.wrapper),
-    .product-horizontal>.wrapper>div,
-    .collection>div
-  `)
-    .forEach(card =>{
-      const button = card.querySelector('a.button');
-      if (!button) return;
+    document
+      .querySelectorAll(`
+      .product-grid>div:not(.wrapper),
+      .product-grid>.wrapper>div,
+      .product-horizontal>div:not(.wrapper),
+      .product-horizontal>.wrapper>div,
+      .column-2>div,
+      .column-2>.wrapper>div,
+      .column-3>.wrapper>div,
+      .column-3>div,
+      .column-4>div,
+      .column-4>.wrapper>div
+    `)
+      .forEach(card =>{
+        const button = card.querySelector('a.button');
+        if (!button) return;
 
-      const href = button.getAttribute('href');
-      if (!href) return;
+        const href = button.getAttribute('href');
+        if (!href) return;
 
-      // card.style.cursor = 'pointer';
+        card.style.cursor = 'pointer';
 
-      card.onclick = function (e) {
-        if (e.target.closest('a, button')) return;
-        window.location.href = href;
-      };
-    });
-});
+        card.onclick = function (e) {
+          if (e.target.closest('a')) return;
+          window.location.href = href;
+        };
+      });
+  });
 
 //YOUTUBE
 let ytPlayers = [];
