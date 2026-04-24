@@ -36,6 +36,7 @@
   function updateToggleUI() {
     toggleBtn.textContent = inspectorEnabled ? 'Inspector ON' : 'Inspector OFF';
     landing.style.cursor = inspectorEnabled ? 'crosshair' : '';
+    // landing.style.cursor = inspectorEnabled ? 'cell' : '';
 
     // 👇 NEW: color change
     toggleBtn.style.color = inspectorEnabled ? '#d7ff9a' : '#ff6b6b';
@@ -128,6 +129,7 @@
     zIndex: '999999',
     pointerEvents: 'none',
     display: 'none',
+    width: 'max-content',
     maxWidth: '360px',
     padding: '8px 10px',
     borderRadius: '8px',
@@ -174,12 +176,31 @@
   }
 
   function moveBox(box, e) {
-    let x = e.clientX + 14;
-    let y = e.clientY + 14;
+const offset = 14;
 
-    box.style.left = `${x}px`;
-    box.style.top = `${y}px`;
-  }
+let x = e.clientX + offset;
+let y = e.clientY + offset;
+
+// Temporarily position to measure
+box.style.left = `${x}px`;
+box.style.top = `${y}px`;
+
+const rect = box.getBoundingClientRect();
+
+// If overflowing right → flip to left side of cursor
+if (rect.right > window.innerWidth - 8) {
+  x = e.clientX - rect.width - offset;
+}
+
+// If overflowing bottom → flip above cursor
+if (rect.bottom > window.innerHeight - 8) {
+  y = e.clientY - rect.height - offset;
+}
+
+// Final position (clamped slightly inside viewport)
+box.style.left = `${Math.max(8, x)}px`;
+box.style.top = `${Math.max(8, y)}px`;
+}
 
   document.addEventListener('mousemove', e => {
     if (!inspectorEnabled) return;
@@ -230,17 +251,21 @@
     const all = [clone, ...clone.querySelectorAll('*')];
 
     all.forEach(node => {
-      node.style?.removeProperty('outline');
-      node.style?.removeProperty('outline-offset');
+// remove inspector + pointer styles
+node.style?.removeProperty('outline');
+node.style?.removeProperty('outline-offset');
+node.style?.removeProperty('cursor'); // 👈 NEW
 
-      if (!node.getAttribute('style')?.trim()) {
-        node.removeAttribute('style');
-      }
+// clean empty style attribute
+if (!node.getAttribute('style')?.trim()) {
+  node.removeAttribute('style');
+}
 
-      [...node.attributes].forEach(attr => {
-        node.setAttribute(attr.name, decodeHTML(attr.value));
-      });
-    });
+// decode attributes (like href)
+[...node.attributes].forEach(attr => {
+  node.setAttribute(attr.name, decodeHTML(attr.value));
+});
+});
 
     return clone;
   }
