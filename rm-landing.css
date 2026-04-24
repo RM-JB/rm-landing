@@ -4,55 +4,59 @@
 }
 
 body,
-:is(div#NoNavBarPageContent, div.ux-content) {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-}
-
-div.headerSpacing {
-  margin: 0;
-}
+:is(div#NoNavBarPageContent, div.ux-content) {margin: 0 !important;padding: 0 !important;width: 100% !important;}
+div.headerSpacing {margin: 0;}
 
 /* RESET */
 main#rm-landing *,
 #rm-landing *::before,
-*::after {
-  box-sizing: border-box;
-}
-
-main#rm-landing * {
-  margin: 0;
-  padding: 0;
-  font: inherit;
-}
-
-html {
-  hanging-punctuation: first last;
-}
-
-main#rm-landing :is(img, picture, svg, video) {
-  display: block;
-  max-width: 100%;
-}
-
-main#rm-landing :is(h1, h2, h3, h4, h5, h6) {
-  text-wrap: balance;
-}
-
-main#rm-landing :is(p, li) {
-  text-wrap: pretty;
-}
-
+*::after {box-sizing: border-box;}
+main#rm-landing * {margin: 0;padding: 0;font: inherit;}
+html {hanging-punctuation: first last;}
+main#rm-landing :is(img, picture, svg, video) {display: block;max-width: 100%;}
+main#rm-landing :is(h1, h2, h3, h4, h5, h6) {text-wrap: balance;}
+main#rm-landing :is(p, li) {text-wrap: pretty;}
 /* RESET END */
 
+main#rm-landing {
+  --border-radius: 0.25em;
+  --content-width: 1300px;
+  --gap: 1.5rem;
+
+  --black: rgb(0 0 0);
+  --red: #ce0e2d;
+  --grey: #333;
+  --grey-2: #555;
+  --light-grey: #777;
+  --blue: rgb(31 82 140);
+  --green: rgb(0 150 0);
+  --yellow: rgb(255, 255, 0);
+
+  --font-berthold: "berthold", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-industry: ;
+
+  --step--1: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+  --step-0: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --step-3: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+  --step-4: clamp(2rem, 1.8rem + 2.5vw, 3.5rem);
+  --step-5: clamp(2.5rem, 2rem + 3.5vw, 4rem);
+
+  color: var(--grey);
+  display: grid;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.4em !important;
+  grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
+  height: 100%;
+  /* padding-bottom: 2rem; */
+  &>* {grid-column: mainContent;}
+}
+
 main#rm-landing :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--heading-font);
   font-weight: bold;
-  letter-spacing: 0.05rem;
   line-height: 1.1;
   margin-bottom: 0.2em;
-  text-transform: uppercase;
 }
 main#rm-landing h1 {font-size: var(--step-5);}
 main#rm-landing h2 {font-size: var(--step-4);}
@@ -63,41 +67,8 @@ main#rm-landing h6 {font-size: var(--step-0);}
 
 main#rm-landing i {font-style: italic;}
 
-main#rm-landing {
-  --border-radius: 0.25em;
-  --content-width: 1300px;
-  --gap: 1.5rem;
-
-  --black: rgb(0 0 0);
-  --red: #c00;
-  --grey: #333;
-  --light-grey: #777;
-  --blue: rgb(31 82 140);
-  --green: rgb(0 150 0);
-  --yellow: rgb(255, 255, 0);
-
-  --heading-font: "berthold", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
-  --step--1: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
-  --step-0: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
-  --step-1: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
-  --step-3: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
-  --step-4: clamp(2.5rem, 2rem + 2.5vw, 3.75rem);
-  --step-5: clamp(3rem, 2.5rem + 3.5vw, 4.5rem);
-
-  color: var(--grey);
-  display: grid;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 1.4em !important;
-  grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
-  height: 100%;
-  /* padding-bottom: 2rem; */
-  &>* {grid-column: mainContent;}
-}
-
 main#rm-landing :is(section, article) {
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
 main#rm-landing a {
@@ -105,37 +76,31 @@ main#rm-landing a {
 }
 
 main#rm-landing :is(button, a.button) {
-  --bg-initial: var(--red);
+  --bg-initial: rgb(255 255 255 / 0);
   --bg-hover: black;
-  --text-initial: white;
+  --text-initial: black;
   --text-hover: white;
-  background-color: var(--initial-color);
-  background-image: linear-gradient(110deg, var(--bg-initial) 48%, white 48%, white 52%, var(--bg-hover) 52%);
-  background-position: left;
-  background-size: 300%;
-  border: 2px solid var(--bg-initial);
-  border-radius: var(--border-radius);
-  color: var(--text-initial) !important;
-  display: block;
-  font-size: 1.35rem;
-  font-weight: bold;
-  height: fit-content;
-  padding: 0.85rem 1rem;
-  text-align: center;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-transform: uppercase;
-  text-underline-offset: -3px;
-  transition: 250ms;
+  backdrop-filter: blur(5px);
+  background-color: var(--bg-initial);
+  border: 2px solid var(--text-initial);
+  border-radius: 100vw;
+  color: var(--text-initial);
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  transition: background-color 250ms, color 250ms, scale 250ms;
   width: fit-content;
-
-  &:is(:hover, :focus-visible) {
-    background-position: right;
+  &:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-hover);
+    /* scale: 1.05; */
+  }
+  &.solid {
+    --bg-initial: black;
+    --bg-hover: white;
+    --text-initial: white;
+    --text-hover: black;
     border-color: var(--text-hover);
-    color: var(--text-hover) !important;
-    text-decoration-color: var(--text-hover);
-    text-underline-offset: 3px;
-    scale: 1.05;
   }
 }
 main#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){
@@ -151,7 +116,7 @@ main#rm-landing header {
   padding: 2rem 0;
 
   & h1 {
-    font-size: clamp(5rem, 7vw, 6.5em) !important;
+    padding-bottom: 2rem !important;
   }
 
   &:first-of-type {
@@ -173,9 +138,9 @@ main#rm-landing nav {
   flex-wrap: wrap;
   gap: var(--gap);
   justify-content: space-around;
-  padding: 1.5rem 0;
+  padding: 0 1.5rem !important;
   place-self: center;
-  width: fit-content;
+  /* width: fit-content; */
 
   & a::after {
     content: "" !important;
@@ -199,47 +164,36 @@ main#rm-landing .full-bleed {
   display: grid !important;
   grid-column: fullWidth;
   grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
-
   &>* {
     grid-column: mainContent;
     padding: 0;margin: 0;
   }
-
   &>:is(button, a.button) {
     margin-left: 1em;
   }
-
   & :is(.product-grid, .product-horizontal, .gallery) {
     justify-content: space-around;
   }
 }
 
-main#rm-landing .black {
+main#rm-landing :is(.black, .red, .grey) {
   background: black;
   color: white;
   & :is(button, a.button):not(:is(.product-grid, .product-horizontal) a.button) {
     --bg-hover: white;
+    --text-initial: white;
     --text-hover: black;
   }
-}
-main#rm-landing .red {
-  background: var(--red);
-  color: white;
-  & :is(button, a.button) {
-    --bg-initial: black;
-    --bg-hover: white;
-    --text-hover: black;
+  & :is(button, a.button).solid {
+    background-color: white;
+    border-color: white;
+    color: black;
+    &:hover {
+      background-color: transparent;
+      color: white;
+    }
   }
 }
-main#rm-landing .grey {
-  background: var(--grey);
-  color: white;
-  & :is(button, a.button) {
-    --bg-hover: white;
-    --text-hover: black;
-  }
-}
-
 
 main#rm-landing :is([class^="column-"], [class*=" column-"]):has(>div.wrapper)>div.wrapper,
 main#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapper)) {
@@ -249,25 +203,16 @@ main#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapp
   place-content: center !important;
   place-items: center !important;
 }
-main#rm-landing .column-2>div.wrapper>*,
-main#rm-landing .column-2:not(:has(>div.wrapper))>* {
-  flex: 1 0 calc(50% - var(--gap));
-  max-width: calc(var(--content-width) / 2 - var(--gap) * 1.5);
-  min-width: 250px;
-}
-main#rm-landing .column-3>div.wrapper>*,
-main#rm-landing .column-3:not(:has(>div.wrapper))>* {
-  flex: 1 0 calc(33% - (var(--gap)));
-  max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
+main#rm-landing :is(:is([class^="column-"], [class*=" column-"])>div.wrapper>*, :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapper))>*) {
+  /* --columns: 2; */
+  flex: 1 0 calc(calc(100% / var(--columns)) - var(--gap));
+  max-width: calc(var(--content-width) / var(--columns) - var(--gap) * 1.5);
   min-width: 250px;
 }
 
-main#rm-landing .column-4>div.wrapper>*,
-main#rm-landing .column-4:not(:has(>div.wrapper))>* {
-  flex: 1 0 calc(25% - (var(--gap)));
-  max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
-  min-width: 170px;
-}
+main#rm-landing :is(.column-2>div.wrapper>*, .column-2:not(:has(>div.wrapper))>*) {--columns: 2;}
+main#rm-landing :is(.column-3>div.wrapper>*, .column-3:not(:has(>div.wrapper))>*) {--columns: 3;}
+main#rm-landing :is(.column-4>div.wrapper>*, .column-4:not(:has(>div.wrapper))>*) {--columns: 4;}
 
 main#rm-landing :is(section.gallery:not(:has(>div.wrapper)), section.gallery:has(>div.wrapper)>div.wrapper) {
   display: grid;
@@ -276,9 +221,10 @@ main#rm-landing :is(section.gallery:not(:has(>div.wrapper)), section.gallery:has
   justify-content: space-around;
   place-items: center;
 
+  & > h1:is(:first-child) {grid-column: 1 / -1;text-align: center;}
+
   & :is(img, div:not(.wrapper)){
     aspect-ratio: 1;
-    box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 0.15);
     min-width: 120px;
     width: 100%;
     &.gallery-half {
@@ -320,15 +266,15 @@ main#rm-landing .cover-image {
   color: black !important;
 
   &.black {
-    background-image: linear-gradient(rgb(0 0 0 / 0.25) 50%, black), var(--cover-image);
+    background-image: linear-gradient(rgb(0 0 0 / 0.5) 50%, black), var(--cover-image);
   }
 
   &.red {
-    background-image: linear-gradient(rgb(204 0 0 / 0.25) 50%, var(--red)), var(--cover-image);
+    background-image: linear-gradient(rgb(204 0 0 / 0.5) 50%, var(--red)), var(--cover-image);
   }
 
   &.grey {
-    background-image: linear-gradient(rgb(51 51 51 / 0.25) 50%, var(--grey)), var(--cover-image);
+    background-image: linear-gradient(rgb(51 51 51 / 0.5) 50%, var(--grey)), var(--cover-image);
   }
 }
 
@@ -341,21 +287,23 @@ main#rm-landing .product-grid div.wrapper {
   place-content: center;
   place-items: center;
 
+  & > h1:is(:first-child) {flex-basis: 100%;text-align: center;}
+
   & div:not(.wrapper) {
     background-color: white;
     border: 1px solid rgb(0 0 0 / 0.1);
     border-radius: 1rem;
-    box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 0.25);
     cursor: pointer;
     display: grid;
     flex: 1 0 calc(25% - (var(--gap)));
     max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
     min-width: 150px;
     gap: 0.75rem;
-    grid-template-areas: "brand" "product" "button" "price" "title" "details";
-    grid-template-rows: repeat(2, auto) 25px repeat(3, auto);
+    grid-template-areas: "brand" "product" "title" "price" "details" "button";
+    grid-template-rows: repeat(2, auto) auto repeat(3, auto);
     padding: 1rem;
-    transition: scale 250ms;
+    text-align: center;
+    transition: border-color 150ms, scale 250ms;
 
     &>*:not(a) {
       padding: 0 !important;
@@ -363,6 +311,7 @@ main#rm-landing .product-grid div.wrapper {
     }
 
     & img:first-of-type {
+      border-radius: 0;
       grid-area: brand;
       place-self: center;
       max-width: 80px;
@@ -402,11 +351,8 @@ main#rm-landing .product-grid div.wrapper {
     & a.button {
       grid-area: button;
       margin-inline: auto;
-      transform: translateY(-25px);
-      width: 80%;
     }
-
-    /* &:has(a.button:hover) {scale: 1.025;} */
+    &:hover {border-color: rgb(0 0 0 / 0.35);}
   }
 
   &.product-horizontal div:not(.wrapper) {
@@ -414,19 +360,13 @@ main#rm-landing .product-grid div.wrapper {
     max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
     min-width: 250px;
     grid-template-columns: 50% 1fr;
-    grid-template-areas: "product brand" "product price" "product title" "product details" "button button";
-    grid-template-rows: repeat(4, auto) 25px;
+    grid-template-areas: "product brand" "product price" "product title" "product details" "product button";
+    grid-template-rows: repeat(5, auto);
     place-items: center;
-
-    & a.button {
-      transform: translateY(15px);
-    }
   }
 }
 
-main#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6))+ :is(p, h1, h2, h3, h4, h5, h6) {
-  padding-top: 1rem;
-}
+main#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6)) + :is(p, h1, h2, h3, h4, h5, h6) {padding-top: 1rem;}
 
 main#rm-landing .collection {
   & img {
@@ -435,7 +375,7 @@ main#rm-landing .collection {
   }
 }
 
-main#rm-landing :is(.product-grid>div:not(.wrapper),
+/* main#rm-landing :is(.product-grid>div:not(.wrapper),
   .product-grid>.wrapper>div,
   .product-horizontal>div:not(.wrapper),
   .product-horizontal>.wrapper>div,
@@ -445,7 +385,7 @@ main#rm-landing :is(.product-grid>div:not(.wrapper),
   &:hover {
     scale: 1.015
   }
-}
+} */
 
 main#rm-landing .space {
   display: block;
@@ -484,69 +424,11 @@ main#rm-landing .sub-heading {
   }
 }
 
-
-/* YT VIDEO STYLING */
-  #rm-landing .yt-wrapper {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      transition: scale 250ms;
-
-      &:hover .yt-play-btn {
-          scale: 1.05;
-      }
-  }
-
-  #rm-landing .yt-wrapper iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-  }
-
-  #rm-landing .yt-overlay {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      transition: opacity 0.3s ease;
-      z-index: 2;
-  }
-
-  #rm-landing .yt-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-  }
-
-  #rm-landing .yt-play-btn {
-      border-radius: 1rem;
-      display: block;
-      width: 100px;
-      height: 72px;
-      background: rgb(255 0 0);
-      border: none;
-      position: relative;
-      transition: scale 350ms;
-      cursor: pointer;
-  }
-
-  #rm-landing .yt-play-btn::before {
-      content: "";
-      position: absolute;
-      left: 40px;
-      top: 20px;
-      border-style: solid;
-      border-width: 16px 0 16px 26px;
-      border-color: transparent transparent transparent white;
-  }
-
-  @media (max-width: 800px) {
-      #rm-landing .column-4 rm-container>* {
-          flex: 0 0 calc(50% - var(--gap));
-      }
-  }
-
-  /* YT VIDEO STYLING END */
+main#rm-landing .hero {
+  display: grid;
+  grid-column: fullWidth;
+  /* grid-template-areas: ". 1 2 3 ."; */
+  grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] repeat(3, minmax(1.5rem, calc(var(--content-width) / 3))) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
+  grid-template-rows: repeat(3, 1fr);
+  min-height: 60vh;
+}
