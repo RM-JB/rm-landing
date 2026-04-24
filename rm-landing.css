@@ -21,7 +21,7 @@ main#rm-landing :is(p, li) {text-wrap: pretty;}
 main#rm-landing {
   --border-radius: 0.25em;
   --content-width: 1300px;
-  --gap: 1.5rem;
+  --gap: 1rem;
 
   --black: rgb(0 0 0);
   --red: #ce0e2d;
@@ -47,7 +47,7 @@ main#rm-landing {
   display: grid;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1.4em !important;
-  grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
+  grid-template-columns: [fullWidth-start] minmax(2rem, 1fr) [mainContent-start] minmax(2rem, var(--content-width)) [mainContent-end] minmax(2rem, 1fr) [fullWidth-end];
   height: 100%;
   /* padding-bottom: 2rem; */
   &>* {grid-column: mainContent;}
@@ -82,11 +82,11 @@ main#rm-landing :is(button, a.button) {
   --text-hover: white;
   backdrop-filter: blur(5px);
   background-color: var(--bg-initial);
-  border: 2px solid var(--text-initial);
+  border: 1.5px solid var(--text-initial);
   border-radius: 100vw;
   color: var(--text-initial);
   display: inline-block;
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.75rem;
   text-decoration: none;
   transition: background-color 250ms, color 250ms, scale 250ms;
   width: fit-content;
@@ -130,6 +130,8 @@ main#rm-landing img {
 
 main#rm-landing .img-round img {
   border-radius: 100% !important;
+  margin-inline: auto;
+  width: 80%;
 }
 
 main#rm-landing nav {
@@ -177,7 +179,6 @@ main#rm-landing .full-bleed {
 }
 
 main#rm-landing :is(.black, .red, .grey) {
-  background: black;
   color: white;
   & :is(button, a.button):not(:is(.product-grid, .product-horizontal) a.button) {
     --bg-hover: white;
@@ -194,6 +195,10 @@ main#rm-landing :is(.black, .red, .grey) {
     }
   }
 }
+ main#rm-landing .black {background-color: black;}
+ main#rm-landing .grey {background-color: var(--grey);}
+ main#rm-landing .red {background-color: var(--red);}
+
 
 main#rm-landing :is([class^="column-"], [class*=" column-"]):has(>div.wrapper)>div.wrapper,
 main#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapper)) {
@@ -217,24 +222,31 @@ main#rm-landing :is(.column-4>div.wrapper>*, .column-4:not(:has(>div.wrapper))>*
 main#rm-landing :is(section.gallery:not(:has(>div.wrapper)), section.gallery:has(>div.wrapper)>div.wrapper) {
   display: grid;
   gap: var(--gap) !important;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   justify-content: space-around;
   place-items: center;
 
   & > h1:is(:first-child) {grid-column: 1 / -1;text-align: center;}
 
   & :is(img, div:not(.wrapper)){
-    aspect-ratio: 1;
+    aspect-ratio: 1/1;
     min-width: 120px;
     width: 100%;
     &.gallery-half {
       aspect-ratio: 2.05/1;
       grid-column: span 2;
       object-fit: cover;
+      @media (max-width: 750px) {aspect-ratio: 2/1;}
     }
     &.gallery-full {
-      aspect-ratio: 3/1;
+      aspect-ratio: 4/1;
       grid-column: 1 / -1;
+      object-fit: cover;
+      @media (max-width: 750px) {aspect-ratio: 2/1;}
+    }
+    &.gallery-three-fourths {
+      aspect-ratio: 3.1/1;
+      grid-column: span 3;
       object-fit: cover;
       @media (max-width: 750px) {aspect-ratio: 2/1;}
     }
@@ -298,27 +310,39 @@ main#rm-landing .product-grid div.wrapper {
     flex: 1 0 calc(25% - (var(--gap)));
     max-width: calc(var(--content-width) / 4 - var(--gap) * 1.5);
     min-width: 150px;
-    gap: 0.75rem;
+    overflow: hidden;
     grid-template-areas: "brand" "product" "title" "price" "details" "button";
-    grid-template-rows: repeat(2, auto) auto repeat(3, auto);
-    padding: 1rem;
+    grid-template-rows: auto;
     text-align: center;
     transition: border-color 150ms, scale 250ms;
 
-    &>*:not(a) {
-      padding: 0 !important;
+    &>* {
       margin: 0 !important;
+      :not(a) {
+        padding: 0 !important;
+      }
     }
 
-    & img:first-of-type {
+    & img:has(+ img):first-of-type {
       border-radius: 0;
       grid-area: brand;
       place-self: center;
       max-width: 80px;
+      margin-bottom: 0.75rem !important;
+      margin-top: 0.75rem !important;
+      /* & + img {
+        margin-inline: auto !important;
+        width: calc(100% - 1.5rem);
+      } */
     }
 
-    & img:last-of-type {
-      grid-area: product;
+    & > img:first-of-type:not(:has(+ img)) {border-radius: 0;}
+
+    & img {
+      border-radius: 0;
+      &:last-of-type {
+        grid-area: product;
+      }
     }
 
     & :is(h1, h2, h3, h4, h5, h6) {
@@ -350,12 +374,14 @@ main#rm-landing .product-grid div.wrapper {
 
     & a.button {
       grid-area: button;
-      margin-inline: auto;
+      margin-inline: auto !important;
+      margin-bottom: 1rem !important;
+      margin-top: 1rem !important;
     }
     &:hover {border-color: rgb(0 0 0 / 0.35);}
   }
 
-  &.product-horizontal div:not(.wrapper) {
+  /* &.product-horizontal div:not(.wrapper) {
     flex: 1 0 calc(33% - (var(--gap)));
     max-width: calc(var(--content-width) / 3 - var(--gap) * 1.5);
     min-width: 250px;
@@ -363,23 +389,15 @@ main#rm-landing .product-grid div.wrapper {
     grid-template-areas: "product brand" "product price" "product title" "product details" "product button";
     grid-template-rows: repeat(5, auto);
     place-items: center;
-  }
+  } */
 }
 
 main#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6)) + :is(p, h1, h2, h3, h4, h5, h6) {padding-top: 1rem;}
 
-main#rm-landing .collection {
-  & img {
-    margin-inline: auto;
-    width: 80%;
-  }
-}
-
 /* main#rm-landing :is(.product-grid>div:not(.wrapper),
   .product-grid>.wrapper>div,
   .product-horizontal>div:not(.wrapper),
-  .product-horizontal>.wrapper>div,
-  .collection>div) {
+  .product-horizontal>.wrapper>div {
   transition: scale 250ms;
 
   &:hover {
@@ -489,12 +507,3 @@ main#rm-landing .sub-heading {
 }
 
 /* YT VIDEO STYLING END */
-
-main#rm-landing .hero {
-  display: grid;
-  grid-column: fullWidth;
-  /* grid-template-areas: ". 1 2 3 ."; */
-  grid-template-columns: [fullWidth-start] minmax(1.5rem, 1fr) [mainContent-start] repeat(3, minmax(1.5rem, calc(var(--content-width) / 3))) [mainContent-end] minmax(1.5rem, 1fr) [fullWidth-end];
-  grid-template-rows: repeat(3, 1fr);
-  min-height: 60vh;
-}
