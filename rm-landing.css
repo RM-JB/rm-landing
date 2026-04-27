@@ -46,7 +46,7 @@ main#rm-landing {
   color: var(--grey);
   display: grid;
   font-family: Helvetica, Arial, system-ui, sans-serif;
-  font-size: 1.2em !important;
+  font-size: 1.2rem;
   grid-template-columns: [fullWidth-start] minmax(2rem, 1fr) [mainContent-start] minmax(2rem, var(--content-width)) [mainContent-end] minmax(2rem, 1fr) [fullWidth-end];
   height: 100%;
   /* padding-bottom: 2rem; */
