@@ -45,8 +45,8 @@ main#rm-landing {
 
   color: var(--grey);
   display: grid;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 1.4em !important;
+  font-family: Helvetica, Arial, system-ui, sans-serif;
+  font-size: 1.2em !important;
   grid-template-columns: [fullWidth-start] minmax(2rem, 1fr) [mainContent-start] minmax(2rem, var(--content-width)) [mainContent-end] minmax(2rem, 1fr) [fullWidth-end];
   height: 100%;
   /* padding-bottom: 2rem; */
@@ -75,7 +75,7 @@ main#rm-landing a {
   color: var(--red);
 }
 
-main#rm-landing :is(button, a.button) {
+main#rm-landing :is(button, a.button):not(.yt-play-btn) {
   --bg-initial: rgb(255 255 255 / 0);
   --bg-hover: black;
   --text-initial: black;
@@ -316,12 +316,9 @@ main#rm-landing .product-grid div.wrapper {
     text-align: center;
     transition: border-color 150ms, scale 250ms;
 
-    &>* {
-      margin: 0 !important;
-      :not(a) {
-        padding: 0 !important;
-      }
-    }
+    &:hover {border-color: rgb(0 0 0 / 0.35);}
+
+    &>* {margin: 0 !important;}
 
     & img:has(+ img):first-of-type {
       border-radius: 0;
@@ -378,7 +375,6 @@ main#rm-landing .product-grid div.wrapper {
       margin-bottom: 1rem !important;
       margin-top: 1rem !important;
     }
-    &:hover {border-color: rgb(0 0 0 / 0.35);}
   }
 
   /* &.product-horizontal div:not(.wrapper) {
@@ -391,6 +387,9 @@ main#rm-landing .product-grid div.wrapper {
     place-items: center;
   } */
 }
+main#rm-landing .black :is(.product-grid, .product-grid div.wrapper) div:hover {
+  border-color: white;
+}
 
 main#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6)) + :is(p, h1, h2, h3, h4, h5, h6) {padding-top: 1rem;}
 
@@ -399,7 +398,6 @@ main#rm-landing img:has(+ :is(p, h1, h2, h3, h4, h5, h6)) + :is(p, h1, h2, h3, h
   .product-horizontal>div:not(.wrapper),
   .product-horizontal>.wrapper>div {
   transition: scale 250ms;
-
   &:hover {
     scale: 1.015
   }
@@ -449,18 +447,15 @@ main#rm-landing .sub-heading {
     aspect-ratio: 16 / 9;
     overflow: hidden;
     transition: scale 250ms;
-
     &:hover .yt-play-btn {
         scale: 1.05;
     }
 }
-
 #rm-landing .yt-wrapper iframe {
     width: 100%;
     height: 100%;
     border: 0;
 }
-
 #rm-landing .yt-overlay {
     position: absolute;
     inset: 0;
@@ -472,12 +467,10 @@ main#rm-landing .sub-heading {
     transition: opacity 0.3s ease;
     z-index: 2;
 }
-
 #rm-landing .yt-overlay.hidden {
     opacity: 0;
     pointer-events: none;
 }
-
 #rm-landing .yt-play-btn {
     border-radius: 1rem;
     display: block;
@@ -489,7 +482,6 @@ main#rm-landing .sub-heading {
     transition: scale 350ms;
     cursor: pointer;
 }
-
 #rm-landing .yt-play-btn::before {
     content: "";
     position: absolute;
@@ -499,11 +491,21 @@ main#rm-landing .sub-heading {
     border-width: 16px 0 16px 26px;
     border-color: transparent transparent transparent white;
 }
-
 @media (max-width: 800px) {
     #rm-landing .column-4 rm-container>* {
         flex: 0 0 calc(50% - var(--gap));
     }
 }
-
 /* YT VIDEO STYLING END */
+
+/* main#rm-landing :is(
+  .product-grid>div:not(.wrapper),
+  .product-grid>.wrapper>div,
+  .product-horizontal>div:not(.wrapper),
+  .product-horizontal>.wrapper>div,
+  .column-2>div:not(.wrapper),
+  .column-2>.wrapper>div,
+  .column-3>.wrapper>div,
+  .column-3>div:not(.wrapper),
+  .column-4>div:not(.wrapper),
+  .column-4>.wrapper>div):has(> a) {transition: scale 250ms;&:hover > a.button {scale: 1.025;}} */
