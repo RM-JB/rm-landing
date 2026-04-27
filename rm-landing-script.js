@@ -1,5 +1,5 @@
 document.querySelectorAll('.product-grid.full-bleed, .product-horizontal.full-bleed, .gallery.full-bleed, :is([class^="column-"], [class*=" column-"]).full-bleed')
-  .forEach(parent =>{
+  .forEach(parent => {
     // Skip if already wrapped (prevents duplication)
     if (parent.querySelector(':scope>.wrapper')) return;
 
@@ -14,11 +14,11 @@ document.querySelectorAll('.product-grid.full-bleed, .product-horizontal.full-bl
     parent.appendChild(wrapper);
   });
 
-document.addEventListener('DOMContentLoaded', () =>{
+document.addEventListener('DOMContentLoaded', () => {
   // Wrap children of full-bleed grids/horizontals
   document
     .querySelectorAll('.product-grid.full-bleed, .product-horizontal.full-bleed')
-    .forEach(parent =>{
+    .forEach(parent => {
       if (parent.querySelector(':scope>.wrapper')) return;
 
       const wrapper = document.createElement('div');
@@ -32,72 +32,98 @@ document.addEventListener('DOMContentLoaded', () =>{
     });
 
   // Add onclick to each card div based on its own a.button link
-    document
-      .querySelectorAll(`
-      .product-grid>div:not(.wrapper),
-      .product-grid>.wrapper>div,
-      .product-horizontal>div:not(.wrapper),
-      .product-horizontal>.wrapper>div,
-      .column-2>div,
-      .column-2>.wrapper>div,
-      .column-3>.wrapper>div,
-      .column-3>div,
-      .column-4>div,
-      .column-4>.wrapper>div
-    `)
-      .forEach(card =>{
-        const button = card.querySelector('a.button');
-        if (!button) return;
+  document
+    .querySelectorAll(`
+    .product-grid>div:not(.wrapper),
+    .product-grid>.wrapper>div,
+    .product-horizontal>div:not(.wrapper),
+    .product-horizontal>.wrapper>div,
+    .column-2>div:not(.wrapper),
+    .column-2>.wrapper>div,
+    .column-3>.wrapper>div,
+    .column-3>div:not(.wrapper),
+    .column-4>div:not(.wrapper),
+    .column-4>.wrapper>div
+  `)
+    .forEach(card => {
+      const button = card.querySelector('a.button');
+      if (!button) return;
 
-        const href = button.getAttribute('href');
-        if (!href) return;
+      const href = button.getAttribute('href');
+      if (!href) return;
 
-        card.style.cursor = 'pointer';
+      card.style.cursor = 'pointer';
 
-        card.onclick = function (e) {
-          if (e.target.closest('a')) return;
-          window.location.href = href;
-        };
-      });
-  });
+      card.onclick = function (e) {
+        if (e.target.closest('a')) return;
+        window.location.href = href;
+      };
+    });
+});
 
 //YOUTUBE
 let ytPlayers = [];
 
-function onYouTubeIframeAPIReady() {
-    document.querySelectorAll(".yt-wrapper").forEach(wrapper => {
-        const videoId = wrapper.dataset.videoId;
-        const overlay = wrapper.querySelector(".yt-overlay");
-        const playerEl = wrapper.querySelector(".yt-player");
+(function loadYouTubeIframeAPI() {
+  if (window.YT && window.YT.Player) {
+    initYouTubeViewers();
+    return;
+  }
 
-        // Set thumbnail
-        overlay.style.backgroundImage =
-            `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`;
+  const existingScript = document.querySelector(
+    'script[src="https://www.youtube.com/iframe_api"]'
+  );
 
-        const player = new YT.Player(playerEl, {
-            videoId,
-            playerVars: {
-                rel: 0,
-                modestbranding: 1
-            },
-            events: {
-                onStateChange: event => {
-                    // ENDED
-                    if (event.data === YT.PlayerState.ENDED) {
-                        overlay.classList.remove("hidden");
-                    }
-                }
-            }
-        });
+  window.onYouTubeIframeAPIReady = initYouTubeViewers;
 
-        ytPlayers.push(player);
+  if (!existingScript) {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    tag.async = true;
+    document.head.appendChild(tag);
+  }
+})();
 
-        overlay.addEventListener("click", () => {
-            overlay.classList.add("hidden");
-            player.playVideo();
-        });
+function initYouTubeViewers() {
+  document.querySelectorAll(".yt-wrapper").forEach(wrapper => {
+    if (wrapper.dataset.ytReady === "true") return;
+    wrapper.dataset.ytReady = "true";
+
+    const videoId = wrapper.dataset.videoId;
+    const overlay = wrapper.querySelector(".yt-overlay");
+    const playerEl = wrapper.querySelector(".yt-player");
+
+    if (!videoId || !overlay || !playerEl) return;
+
+    // Set thumbnail
+    overlay.style.backgroundImage =
+      `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`;
+
+    const player = new YT.Player(playerEl, {
+      videoId,
+      playerVars: {
+        rel: 0,
+        modestbranding: 1
+      },
+      events: {
+        onStateChange: event => {
+          // ENDED
+          if (event.data === YT.PlayerState.ENDED) {
+            overlay.classList.remove("hidden");
+          }
+        }
+      }
     });
+
+    ytPlayers.push(player);
+
+    overlay.addEventListener("click", () => {
+      overlay.classList.add("hidden");
+      player.playVideo();
+    });
+  });
 }
+
 
 // PRICING
 (async () => {
@@ -108,38 +134,38 @@ function onYouTubeIframeAPIReady() {
   const groups = {};
 
   els.forEach(el => {
-      const url = el.dataset.link;
-      (groups[url] ??= []).push(el);
+    const url = el.dataset.link;
+    (groups[url] ??= []).push(el);
   });
 
   for (const url in groups) {
 
-      try {
+    try {
 
-          const res = await fetch(url, { cache: "no-store" });
-          const doc = parser.parseFromString(await res.text(), "text/html");
+      const res = await fetch(url, { cache: "no-store" });
+      const doc = parser.parseFromString(await res.text(), "text/html");
 
-          const low = doc.querySelector("[itemprop='lowPrice']");
-          const high = doc.querySelector("[itemprop='highPrice']");
-          const price = doc.querySelector("[itemprop='price']");
+      const low = doc.querySelector("[itemprop='lowPrice']");
+      const high = doc.querySelector("[itemprop='highPrice']");
+      const price = doc.querySelector("[itemprop='price']");
 
-          let text = "";
+      let text = "";
 
-          if (low && high) {
-              text = `$${low.content} – $${high.content}`;
-          }
-          else if (price) {
-              text = `$${price.content || price.textContent.trim()}`;
-          }
-          else {
-              text = "Price unavailable";
-          }
-
-          groups[url].forEach(el => el.textContent = text);
-
-      } catch (e) {
-          groups[url].forEach(el => el.textContent = "—");
+      if (low && high) {
+        text = `$${low.content} – $${high.content}`;
       }
+      else if (price) {
+        text = `$${price.content || price.textContent.trim()}`;
+      }
+      else {
+        text = "Price unavailable";
+      }
+
+      groups[url].forEach(el => el.textContent = text);
+
+    } catch (e) {
+      groups[url].forEach(el => el.textContent = "—");
+    }
 
   }
 
