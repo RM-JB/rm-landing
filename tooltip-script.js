@@ -1,396 +1,628 @@
 (() => {
-  const landing = document.querySelector('main#rm-landing');
-  if (!landing) return;
+const landing = document.querySelector('main#rm-landing');
+if (!landing) return;
 
-  let inspectorEnabled = false;
+let inspectorEnabled = false;
 
-  const originalTags = new WeakMap();
-  const allowedElements = new WeakSet();
+const originalTags = new WeakMap();
+const allowedElements = new WeakSet();
 
-  let activeTarget = null;
-  let outlinedElement = null;
-  let justClosedPopup = false;
+let activeTarget = null;
+let outlinedElement = null;
+let justClosedPopup = false;
 
-  // ================= TOGGLE BUTTON =================
-  const toggleBtn = document.createElement('button');
-  toggleBtn.textContent = 'Inspector ON';
+// ================= TOGGLE BUTTON =================
+const toggleBtn = document.createElement('button');
+toggleBtn.textContent = 'Inspector ON';
 
-  Object.assign(toggleBtn.style, {
-    position: 'fixed',
-    bottom: '2rem',
-    right: '2rem',
-    zIndex: '1000001',
-    padding: '1rem 1.5rem',
-    borderRadius: '100vw',
-    background: 'rgba(10,10,10,.92)',
-    color: '#d7ff9a',
-    font: '15px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-    border: '1px solid rgba(255,255,255,.08)',
-    boxShadow: '0 0 24px rgba(255,255,255,.25)',
-    cursor: 'pointer',
-    backdropFilter: 'blur(6px)'
-  });
+Object.assign(toggleBtn.style, {
+  position: 'fixed',
+  bottom: '2rem',
+  right: '2rem',
+  zIndex: '1000001',
+  padding: '1rem 1.5rem',
+  borderRadius: '100vw',
+  background: 'rgba(10,10,10,.92)',
+  color: '#d7ff9a',
+  font: '15px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+  border: '1px solid rgba(255,255,255,.08)',
+  boxShadow: '0 0 24px rgba(255,255,255,.25)',
+  cursor: 'pointer',
+  backdropFilter: 'blur(6px)'
+});
 
-  document.body.appendChild(toggleBtn);
+document.body.appendChild(toggleBtn);
 
-  function updateToggleUI() {
-    toggleBtn.textContent = inspectorEnabled ? 'Inspector ON' : 'Inspector OFF';
-    landing.style.cursor = inspectorEnabled ? 'crosshair' : '';
-    // landing.style.cursor = inspectorEnabled ? 'cell' : '';
+function updateToggleUI() {
+  toggleBtn.textContent = inspectorEnabled ? 'Inspector ON' : 'Inspector OFF';
+  landing.style.cursor = inspectorEnabled ? 'crosshair' : '';
+  toggleBtn.style.color = inspectorEnabled ? '#d7ff9a' : '#ff6b6b';
+}
 
-    // 👇 NEW: color change
-    toggleBtn.style.color = inspectorEnabled ? '#d7ff9a' : '#ff6b6b';
+toggleBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  inspectorEnabled = !inspectorEnabled;
+
+  if (!inspectorEnabled) {
+    tooltip.style.display = 'none';
+    clearOutline();
+    closePopup();
   }
-
-  toggleBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    inspectorEnabled = !inspectorEnabled;
-
-    if (!inspectorEnabled) {
-      tooltip.style.display = 'none';
-      clearOutline();
-      closePopup();
-    }
-
-    updateToggleUI();
-  });
 
   updateToggleUI();
+});
 
-  // ================= HELPERS =================
-  function escapeHTML(str) {
-    return String(str).replace(/[&<>"']/g, char => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    }[char]));
+updateToggleUI();
+
+// ================= HELPERS =================
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+}
+
+function decodeHTML(str) {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = str;
+  return textarea.value;
+}
+
+function formatHTML(html) {
+const tab = '  ';
+const template = document.createElement('template');
+template.innerHTML = html.trim();
+
+const inlineTags = new Set([
+  'a', 'span', 'strong', 'em', 'b', 'i', 'small', 'button',
+  'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'
+]);
+
+const voidTags = new Set([
+  'img', 'br', 'hr', 'input', 'meta', 'link', 'area', 'base',
+  'col', 'embed', 'param', 'source', 'track', 'wbr'
+]);
+
+function attrsToString(el) {
+  return [...el.attributes]
+    .map(attr => `${attr.name}="${attr.value.replace(/"/g, '&quot;')}"`)
+    .join(' ');
+}
+
+function openingTag(el) {
+  const attrs = attrsToString(el);
+  return attrs ? `<${el.tagName.toLowerCase()} ${attrs}>` : `<${el.tagName.toLowerCase()}>`;
+}
+
+function formatNode(node, level = 0) {
+  if (node.nodeType === 3) {
+    return node.textContent.trim();
   }
 
-  function decodeHTML(str) {
-    const textarea = document.createElement('textarea');
-    textarea.innerHTML = str;
-    return textarea.value;
+  if (node.nodeType !== 1) return '';
+
+  const tag = node.tagName.toLowerCase();
+  const indent = tab.repeat(level);
+  const open = openingTag(node);
+
+  if (voidTags.has(tag)) {
+    return `${indent}${open}`;
   }
 
-  function getOpeningTagParts(el) {
-    return {
-      tag: el.tagName.toLowerCase(),
-      attrs: el.getAttributeNames().map(name => ({
-        name,
-        value: el.getAttribute(name)
-      }))
-    };
-  }
-
-  function colorOpeningTag(el) {
-    const { tag, attrs } = getOpeningTagParts(el);
-
-    let html = `<span style="color:#9cdcfe;">&lt;</span><span style="color:#4ec9b0;">${tag}</span>`;
-
-    attrs.forEach(attr => {
-      html += ` <span style="color:#dcdcaa;">${escapeHTML(attr.name)}</span>`;
-      if (attr.value !== '') {
-        html += `<span style="color:#9cdcfe;">=</span><span style="color:#ce9178;">"${escapeHTML(attr.value)}"</span>`;
-      }
-    });
-
-    html += `<span style="color:#9cdcfe;">&gt;</span>`;
-    return html;
-  }
-
-  function addAllowed(el, depth = 0, maxDepth = 3) {
-    if (!el || depth > maxDepth) return;
-
-    if (!el.classList?.contains('wrapper')) {
-      allowedElements.add(el);
-      originalTags.set(el, colorOpeningTag(el));
-    }
-
-    [...el.children].forEach(child => {
-      addAllowed(child, depth + 1, maxDepth);
-    });
-  }
-
-  function captureOriginalElements() {
-    [...landing.children].forEach(child => {
-      addAllowed(child, 0, 3);
-    });
-  }
-
-  captureOriginalElements();
-
-  // ================= TOOLTIP =================
-  const tooltip = document.createElement('div');
-
-  Object.assign(tooltip.style, {
-    position: 'fixed',
-    zIndex: '999999',
-    pointerEvents: 'none',
-    display: 'none',
-    width: 'max-content',
-    maxWidth: '360px',
-    padding: '8px 10px',
-    borderRadius: '8px',
-    background: 'rgba(10,10,10,.92)',
-    font: '12px/1.45 ui-monospace, monospace',
-    wordBreak: 'break-word',
-    boxShadow: '0 8px 24px rgba(0,0,0,.25)'
+  const children = [...node.childNodes].filter(child => {
+    return child.nodeType !== 3 || child.textContent.trim();
   });
 
-  document.body.appendChild(tooltip);
+  const close = `</${tag}>`;
 
-  function clearOutline() {
-    if (!outlinedElement) return;
-    outlinedElement.style.outline = '';
-    outlinedElement.style.outlineOffset = '';
-    outlinedElement = null;
+  // Keep simple text-based elements on one line
+  if (
+    inlineTags.has(tag) &&
+    children.length === 1 &&
+    children[0].nodeType === 3
+  ) {
+    return `${indent}${open}${children[0].textContent.trim()}${close}`;
   }
 
-  function outlineElement(el) {
-    if (outlinedElement === el) return;
-    clearOutline();
-    outlinedElement = el;
-    outlinedElement.style.outline = '2px dotted lime';
-    outlinedElement.style.outlineOffset = '-1px';
+  if (!children.length) {
+    return `${indent}${open}${close}`;
   }
 
-  function findAllowedTarget(target) {
-    if (!target || target === landing || !landing.contains(target)) return null;
+  const inner = children
+    .map(child => formatNode(child, level + 1))
+    .filter(Boolean)
+    .join('\n');
 
-    let el = target.nodeType === 1 ? target : target.parentElement;
+  return `${indent}${open}\n${inner}\n${indent}${close}`;
+}
 
-    while (el && el !== landing) {
-      if (allowedElements.has(el)) return el;
+return [...template.content.childNodes]
+  .map(node => formatNode(node, 0))
+  .filter(Boolean)
+  .join('\n')
+  .trim();
+}
 
-      if (el.classList?.contains('wrapper')) {
-        const parent = el.parentElement;
-        if (parent && allowedElements.has(parent)) return parent;
-      }
+function getOpeningTagParts(el) {
+  return {
+    tag: el.tagName.toLowerCase(),
+    attrs: el.getAttributeNames().map(name => ({
+      name,
+      value: el.getAttribute(name)
+    }))
+  };
+}
 
-      el = el.parentElement;
+function colorOpeningTag(el) {
+  const { tag, attrs } = getOpeningTagParts(el);
+
+  let html = `<span style="color:#9cdcfe;">&lt;</span><span style="color:#4ec9b0;">${tag}</span>`;
+
+  attrs.forEach(attr => {
+    html += ` <span style="color:#dcdcaa;">${escapeHTML(attr.name)}</span>`;
+    if (attr.value !== '') {
+      html += `<span style="color:#9cdcfe;">=</span><span style="color:#ce9178;">"${escapeHTML(attr.value)}"</span>`;
     }
+  });
 
-    return null;
+  html += `<span style="color:#9cdcfe;">&gt;</span>`;
+  return html;
+}
+
+function addAllowed(el, depth = 0, maxDepth = 3) {
+  if (!el || depth > maxDepth) return;
+
+  if (!el.classList?.contains('wrapper')) {
+    allowedElements.add(el);
+    originalTags.set(el, colorOpeningTag(el));
   }
 
-  function moveBox(box, e) {
-const offset = 14;
-
-let x = e.clientX + offset;
-let y = e.clientY + offset;
-
-// Temporarily position to measure
-box.style.left = `${x}px`;
-box.style.top = `${y}px`;
-
-const rect = box.getBoundingClientRect();
-
-// If overflowing right → flip to left side of cursor
-if (rect.right > window.innerWidth - 8) {
-  x = e.clientX - rect.width - offset;
+  [...el.children].forEach(child => {
+    addAllowed(child, depth + 1, maxDepth);
+  });
 }
 
-// If overflowing bottom → flip above cursor
-if (rect.bottom > window.innerHeight - 8) {
-  y = e.clientY - rect.height - offset;
+function captureOriginalElements() {
+  [...landing.children].forEach(child => {
+    addAllowed(child, 0, 3);
+  });
 }
 
-// Final position (clamped slightly inside viewport)
-box.style.left = `${Math.max(8, x)}px`;
-box.style.top = `${Math.max(8, y)}px`;
+captureOriginalElements();
+
+// ================= TOOLTIP =================
+const tooltip = document.createElement('div');
+
+Object.assign(tooltip.style, {
+  position: 'fixed',
+  zIndex: '999999',
+  pointerEvents: 'none',
+  display: 'none',
+  width: 'max-content',
+  maxWidth: '360px',
+  padding: '8px 10px',
+  borderRadius: '8px',
+  background: 'rgba(10,10,10,.92)',
+  font: '12px/1.45 ui-monospace, monospace',
+  wordBreak: 'break-word',
+  boxShadow: '0 8px 24px rgba(0,0,0,.25)'
+});
+
+document.body.appendChild(tooltip);
+
+function clearOutline() {
+  if (!outlinedElement) return;
+  outlinedElement.style.outline = '';
+  outlinedElement.style.outlineOffset = '';
+  outlinedElement = null;
 }
 
-  document.addEventListener('mousemove', e => {
-    if (!inspectorEnabled) return;
-    if (e.target.closest('#rm-copy-popup')) return;
+function outlineElement(el) {
+  if (outlinedElement === el) return;
+  clearOutline();
+  outlinedElement = el;
+  outlinedElement.style.outline = '2px dotted lime';
+  outlinedElement.style.outlineOffset = '-1px';
+}
 
-    const target = findAllowedTarget(e.target);
-    activeTarget = target;
+// ================= YOUTUBE SPECIAL COPY =================
+function isYtTarget(el) {
+  if (!el || el === landing) return false;
 
-    if (!target) {
-      tooltip.style.display = 'none';
-      clearOutline();
+  if (el.classList?.contains('yt-wrapper')) return true;
+
+  if (el.tagName?.toLowerCase() === 'section') {
+    return !!el.querySelector(':scope > .yt-wrapper, :scope > .wrapper > .yt-wrapper');
+  }
+
+  return false;
+}
+
+function getYtSectionTarget(el) {
+  if (el.classList?.contains('yt-wrapper')) {
+    return el.closest('section') || el;
+  }
+
+  if (el.tagName?.toLowerCase() === 'section') {
+    return el;
+  }
+
+  return el;
+}
+
+function getYtWrapperFromTarget(el) {
+  const target = getYtSectionTarget(el);
+
+  if (target.classList?.contains('yt-wrapper')) {
+    return target;
+  }
+
+  return target.querySelector(':scope > .yt-wrapper, :scope > .wrapper > .yt-wrapper');
+}
+
+function getYtCopyHTML(el) {
+  const section = getYtSectionTarget(el);
+  const wrapper = getYtWrapperFromTarget(el);
+  const videoId = wrapper?.dataset.videoId || '';
+
+  const sectionClone = section.tagName?.toLowerCase() === 'section'
+    ? section.cloneNode(false)
+    : document.createElement('section');
+
+  sectionClone.style?.removeProperty('outline');
+  sectionClone.style?.removeProperty('outline-offset');
+  sectionClone.style?.removeProperty('cursor');
+
+  if (!sectionClone.getAttribute('style')?.trim()) {
+    sectionClone.removeAttribute('style');
+  }
+
+  [...sectionClone.attributes].forEach(attr => {
+    sectionClone.setAttribute(attr.name, decodeHTML(attr.value));
+  });
+
+  const opening = sectionClone.outerHTML.replace(`</${sectionClone.tagName.toLowerCase()}>`, '');
+
+  return `${opening}
+<div class="yt-wrapper" data-video-id="${decodeHTML(videoId)}">
+<div class="yt-overlay">
+    <button class="yt-play-btn" aria-label="Play video"></button>
+</div>
+
+<div class="yt-player"></div>
+</div>
+</section>`;
+}
+
+// ================= SLIDER SPECIAL COPY =================
+function isSliderTarget(el) {
+  return !!el?.closest?.('section.slider');
+}
+
+function cleanSliderClone(slider) {
+  const clone = slider.cloneNode(false);
+
+  clone.removeAttribute('data-slider-built');
+
+  clone.style?.removeProperty('outline');
+  clone.style?.removeProperty('outline-offset');
+  clone.style?.removeProperty('cursor');
+
+  if (!clone.getAttribute('style')?.trim()) {
+    clone.removeAttribute('style');
+  }
+
+  [...clone.attributes].forEach(attr => {
+    clone.setAttribute(attr.name, decodeHTML(attr.value));
+  });
+
+  return clone;
+}
+
+function getOriginalSliderHTML(el) {
+  const slider = el.closest('section.slider');
+  if (!slider) return '';
+
+  const clone = cleanSliderClone(slider);
+
+  [...slider.children].forEach(child => {
+    if (
+      child.classList?.contains('rm-slider-topbar') ||
+      child.classList?.contains('rm-slider-dots')
+    ) {
       return;
     }
 
-    if (!document.querySelector('#rm-copy-popup')) {
-      tooltip.innerHTML = originalTags.get(target) || colorOpeningTag(target);
-      tooltip.style.display = 'block';
-      moveBox(tooltip, e);
+    if (child.classList?.contains('rm-slider-track')) {
+      const slides = child.querySelectorAll(':scope > .rm-slider-slide');
+
+      slides.forEach(slide => {
+        const slideClone = slide.cloneNode(true);
+
+        slideClone.classList.remove('rm-slider-slide');
+        slideClone.removeAttribute('data-index');
+        slideClone.removeAttribute('style');
+
+        const all = [slideClone, ...slideClone.querySelectorAll('*')];
+
+        all.forEach(node => {
+          node.style?.removeProperty('outline');
+          node.style?.removeProperty('outline-offset');
+          node.style?.removeProperty('cursor');
+
+          if (!node.getAttribute('style')?.trim()) {
+            node.removeAttribute('style');
+          }
+
+          [...node.attributes].forEach(attr => {
+            node.setAttribute(attr.name, decodeHTML(attr.value));
+          });
+        });
+
+        clone.appendChild(slideClone);
+      });
+
+      return;
     }
 
-    outlineElement(target);
+    const extraClone = cleanClone(child);
+    clone.appendChild(extraClone);
   });
 
-  // ================= COPY LOGIC =================
-  function isLowestAllowedLevel(el) {
-    return ![...el.children].some(child => {
-      if (child.classList?.contains('wrapper')) {
-        return [...child.children].length > 0;
-      }
-      return allowedElements.has(child);
-    });
-  }
-
-  function unwrapWrappers(node) {
-    node.querySelectorAll('.wrapper').forEach(wrapper => {
-      while (wrapper.firstChild) {
-        wrapper.parentNode.insertBefore(wrapper.firstChild, wrapper);
-      }
-      wrapper.remove();
-    });
-  }
-
-  function cleanClone(el) {
-    const clone = el.cloneNode(true);
-
-    unwrapWrappers(clone);
-
-    const all = [clone, ...clone.querySelectorAll('*')];
-
-    all.forEach(node => {
-// remove inspector + pointer styles
-node.style?.removeProperty('outline');
-node.style?.removeProperty('outline-offset');
-node.style?.removeProperty('cursor'); // 👈 NEW
-
-// clean empty style attribute
-if (!node.getAttribute('style')?.trim()) {
-  node.removeAttribute('style');
+  return clone.outerHTML.trim().replace(/&amp;/g, '&');
 }
 
-// decode attributes (like href)
-[...node.attributes].forEach(attr => {
-  node.setAttribute(attr.name, decodeHTML(attr.value));
-});
-});
+function findAllowedTarget(target) {
+  if (!target || target === landing || !landing.contains(target)) return null;
 
-    return clone;
-  }
+  let el = target.nodeType === 1 ? target : target.parentElement;
 
-  function getOuterHTML(el) {
-    return cleanClone(el).outerHTML.trim().replace(/&amp;/g, '&');
-  }
+  const slider = el.closest?.('section.slider');
+  if (slider && landing.contains(slider)) return slider;
 
-  function getElementWithoutChildren(el) {
-    const clone = el.cloneNode(false);
+  const ytWrapper = el.closest?.('.yt-wrapper');
+  if (ytWrapper && landing.contains(ytWrapper)) return ytWrapper;
 
-    clone.style?.removeProperty('outline');
-    clone.style?.removeProperty('outline-offset');
+  while (el && el !== landing) {
+    if (isYtTarget(el)) return el;
 
-    if (!clone.getAttribute('style')?.trim()) {
-      clone.removeAttribute('style');
+    if (allowedElements.has(el)) return el;
+
+    if (el.classList?.contains('wrapper')) {
+      const parent = el.parentElement;
+      if (parent && allowedElements.has(parent)) return parent;
     }
 
-    [...clone.attributes].forEach(attr => {
-      clone.setAttribute(attr.name, decodeHTML(attr.value));
+    el = el.parentElement;
+  }
+
+  return null;
+}
+
+function moveBox(box, e) {
+  const offset = 14;
+
+  let x = e.clientX + offset;
+  let y = e.clientY + offset;
+
+  box.style.left = `${x}px`;
+  box.style.top = `${y}px`;
+
+  const rect = box.getBoundingClientRect();
+
+  if (rect.right > window.innerWidth - 8) {
+    x = e.clientX - rect.width - offset;
+  }
+
+  if (rect.bottom > window.innerHeight - 8) {
+    y = e.clientY - rect.height - offset;
+  }
+
+  box.style.left = `${Math.max(8, x)}px`;
+  box.style.top = `${Math.max(8, y)}px`;
+}
+
+document.addEventListener('mousemove', e => {
+  if (!inspectorEnabled) return;
+  if (e.target.closest('#rm-copy-popup')) return;
+
+  const target = findAllowedTarget(e.target);
+  activeTarget = target;
+
+  if (!target) {
+    tooltip.style.display = 'none';
+    clearOutline();
+    return;
+  }
+
+  if (!document.querySelector('#rm-copy-popup')) {
+    tooltip.innerHTML = originalTags.get(target) || colorOpeningTag(target);
+    tooltip.style.display = 'block';
+    moveBox(tooltip, e);
+  }
+
+  outlineElement(target);
+});
+
+// ================= COPY LOGIC =================
+function isLowestAllowedLevel(el) {
+  if (isYtTarget(el)) return true;
+  if (isSliderTarget(el)) return true;
+
+  return ![...el.children].some(child => {
+    if (child.classList?.contains('wrapper')) {
+      return [...child.children].length > 0;
+    }
+    return allowedElements.has(child);
+  });
+}
+
+function unwrapWrappers(node) {
+  node.querySelectorAll('.wrapper').forEach(wrapper => {
+    while (wrapper.firstChild) {
+      wrapper.parentNode.insertBefore(wrapper.firstChild, wrapper);
+    }
+    wrapper.remove();
+  });
+}
+
+function cleanClone(el) {
+  const clone = el.cloneNode(true);
+
+  unwrapWrappers(clone);
+
+  const all = [clone, ...clone.querySelectorAll('*')];
+
+  all.forEach(node => {
+    node.style?.removeProperty('outline');
+    node.style?.removeProperty('outline-offset');
+    node.style?.removeProperty('cursor');
+
+    if (!node.getAttribute('style')?.trim()) {
+      node.removeAttribute('style');
+    }
+
+    [...node.attributes].forEach(attr => {
+      node.setAttribute(attr.name, decodeHTML(attr.value));
     });
+  });
 
-    return clone.outerHTML.trim().replace(/&amp;/g, '&');
+  return clone;
+}
+
+function getOuterHTML(el) {
+  if (isYtTarget(el)) return formatHTML(getYtCopyHTML(el));
+  if (isSliderTarget(el)) return formatHTML(getOriginalSliderHTML(el));
+
+  return formatHTML(cleanClone(el).outerHTML.trim().replace(/&amp;/g, '&'));
+}
+
+function getElementWithoutChildren(el) {
+  if (isYtTarget(el)) return formatHTML(getYtCopyHTML(el));
+  if (isSliderTarget(el)) return formatHTML(getOriginalSliderHTML(el));
+
+  const clone = el.cloneNode(false);
+
+  clone.style?.removeProperty('outline');
+  clone.style?.removeProperty('outline-offset');
+  clone.style?.removeProperty('cursor');
+
+  if (!clone.getAttribute('style')?.trim()) {
+    clone.removeAttribute('style');
   }
 
-  function copyText(text) {
-    return navigator.clipboard.writeText(text);
-  }
+  [...clone.attributes].forEach(attr => {
+    clone.setAttribute(attr.name, decodeHTML(attr.value));
+  });
 
-  function closePopup() {
-    document.querySelector('#rm-copy-popup')?.remove();
-    justClosedPopup = true;
-    setTimeout(() => (justClosedPopup = false), 200);
-  }
+  return formatHTML(clone.outerHTML.trim().replace(/&amp;/g, '&'));
+}
 
-  function openPopup(el, e) {
-    const popup = document.createElement('div');
-    popup.id = 'rm-copy-popup';
+function copyText(text) {
+  return navigator.clipboard.writeText(text);
+}
 
-    Object.assign(popup.style, {
-      position: 'fixed',
-      zIndex: '1000000',
-      display: 'grid',
-      gap: '8px',
-      minWidth: '200px',
-      padding: '12px',
-      borderRadius: '12px',
-      background: 'rgba(10,10,10,.96)',
-      backdropFilter: 'blur(6px)',
-      border: '1px solid rgba(255,255,255,.08)',
-      boxShadow: '0 10px 30px rgba(0,0,0,.35)'
-    });
+function closePopup() {
+  document.querySelector('#rm-copy-popup')?.remove();
+  justClosedPopup = true;
+  setTimeout(() => (justClosedPopup = false), 200);
+}
 
-    const lowest = isLowestAllowedLevel(el);
+function openPopup(el, e) {
+  const popup = document.createElement('div');
+  popup.id = 'rm-copy-popup';
 
-    popup.innerHTML = `
-    ${lowest
+  Object.assign(popup.style, {
+    position: 'fixed',
+    zIndex: '1000000',
+    display: 'grid',
+    gap: '8px',
+    minWidth: '200px',
+    padding: '12px',
+    borderRadius: '12px',
+    background: 'rgba(10,10,10,.96)',
+    backdropFilter: 'blur(6px)',
+    border: '1px solid rgba(255,255,255,.08)',
+    boxShadow: '0 10px 30px rgba(0,0,0,.35)'
+  });
+
+  const lowest = isLowestAllowedLevel(el);
+
+  popup.innerHTML = `
+    ${
+      lowest
         ? `<button data-copy="with">Copy element</button>`
         : `
           <button data-copy="without">Copy parent element only</button>
           <button data-copy="with">Copy with children</button>
         `
-      }
+    }
     <button data-close>Cancel</button>
   `;
 
-    document.body.appendChild(popup);
-    moveBox(popup, e);
-    popup.querySelectorAll('button').forEach(btn => {
-      Object.assign(btn.style, {
-        padding: '8px 10px',
-        borderRadius: '8px',
-        border: '1px solid rgba(255,255,255,.08)',
-        background: 'rgba(10,10,10,.92)',
-        color: '#d7ff9a',
-        font: '12px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-        cursor: 'pointer',
-        textAlign: 'left',
-        boxShadow: '0 6px 16px rgba(0,0,0,.25)',
-        transition: 'all .15s ease'
-      });
+  document.body.appendChild(popup);
+  moveBox(popup, e);
 
-      btn.onmouseenter = () => {
-        btn.style.background = 'rgba(20,20,20,.95)';
-      };
-
-      btn.onmouseleave = () => {
-        btn.style.background = 'rgba(10,10,10,.92)';
-      };
+  popup.querySelectorAll('button').forEach(btn => {
+    Object.assign(btn.style, {
+      padding: '8px 10px',
+      borderRadius: '8px',
+      border: '1px solid rgba(255,255,255,.08)',
+      background: 'rgba(10,10,10,.92)',
+      color: '#d7ff9a',
+      font: '12px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+      cursor: 'pointer',
+      textAlign: 'left',
+      boxShadow: '0 6px 16px rgba(0,0,0,.25)',
+      transition: 'all .15s ease'
     });
 
-    popup.addEventListener('click', ev => {
-      ev.stopPropagation();
+    btn.onmouseenter = () => {
+      btn.style.background = 'rgba(20,20,20,.95)';
+    };
 
-      const btn = ev.target.closest('button');
-      if (!btn) return;
+    btn.onmouseleave = () => {
+      btn.style.background = 'rgba(10,10,10,.92)';
+    };
+  });
 
-      if (btn.dataset.close !== undefined) return closePopup();
+  popup.addEventListener('click', ev => {
+    ev.stopPropagation();
 
-      if (btn.dataset.copy === 'with') copyText(getOuterHTML(el));
-      if (btn.dataset.copy === 'without') copyText(getElementWithoutChildren(el));
+    const btn = ev.target.closest('button');
+    if (!btn) return;
 
-      btn.textContent = 'Copied!';
-      setTimeout(closePopup, 400);
-    });
+    if (btn.dataset.close !== undefined) return closePopup();
+
+    if (btn.dataset.copy === 'with') copyText(getOuterHTML(el));
+    if (btn.dataset.copy === 'without') copyText(getElementWithoutChildren(el));
+
+    btn.textContent = 'Copied!';
+    setTimeout(closePopup, 400);
+  });
+}
+
+document.addEventListener('click', e => {
+  if (!inspectorEnabled) return;
+  if (justClosedPopup) return;
+  if (e.target.closest('#rm-copy-popup')) return;
+
+  const existing = document.querySelector('#rm-copy-popup');
+
+  if (existing) {
+    closePopup();
+    return;
   }
 
-  document.addEventListener('click', e => {
-    if (!inspectorEnabled) return;
-    if (justClosedPopup) return;
-    if (e.target.closest('#rm-copy-popup')) return;
+  const target = activeTarget || findAllowedTarget(e.target);
+  if (!target) return;
 
-    const existing = document.querySelector('#rm-copy-popup');
+  e.preventDefault();
+  e.stopPropagation();
 
-    if (existing) {
-      closePopup();
-      return;
-    }
-
-    const target = activeTarget || findAllowedTarget(e.target);
-    if (!target) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    openPopup(target, e);
-  }, true);
+  openPopup(target, e);
+}, true);
 })();
