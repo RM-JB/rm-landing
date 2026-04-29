@@ -14,23 +14,23 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     if (document.querySelector(".full-bleed")) {
-      loadScript(`${basePath}rm-wrapper.js`);
+      loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-wrapper.js`);
     }
 
     if (document.querySelector(".product-grid, .product-horizontal, .column-2, .column-3, .column-4")) {
-      loadScript(`${basePath}rm-clickable-cards.js`);
+      loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-clickable-cards.js`);
     }
 
     if (document.querySelector(".yt-wrapper")) {
-      loadScript(`${basePath}rm-youtube.js`);
+      loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-youtube.js`);
     }
 
     if (document.querySelector("[data-link]")) {
-      loadScript(`${basePath}rm-pricing.js`);
+      loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-pricing.js`);
     }
 
     if (document.querySelector("#rm-landing .slider")) {
-      loadScript(`${basePath}rm-slider.js`);
+      loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-slider.js`);
     }
   });
 })();
