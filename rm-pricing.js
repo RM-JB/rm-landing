@@ -40,3 +40,5 @@
     }
   }
 })();
+
+// <p class="product-price" data-badge="NEW" data-link="https://www.rockymountainatvmc.com/riding-gear/msr-nxt-air-jersey-p" data-target="[itemprop='price']"></p>
