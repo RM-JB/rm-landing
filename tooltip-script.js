@@ -692,3 +692,106 @@ buttons.forEach(button => {
     }
   });
 });
+
+//CODE COPIER AT BOTTOM
+document.addEventListener("DOMContentLoaded", function () {
+  const main = document.querySelector("#rm-landing");
+  if (!main) return;
+
+  // Load Prism CSS
+  const prismCss = document.createElement("link");
+  prismCss.rel = "stylesheet";
+  prismCss.href = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css";
+  document.head.appendChild(prismCss);
+
+  // Create section
+  const section = document.createElement("section");
+  section.id = "instructions";
+  section.style.fontFamily = "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace";
+  section.style.fontSize = "1.25em";
+
+  section.innerHTML = `
+    <div id="codeWrapper" style="position: relative;">
+      
+      <button id="copyBtn">Copy</button>
+
+      <pre style="margin:0;">
+        <code class="language-html" id="codeBlock"></code>
+      </pre>
+    </div>
+
+    <style>
+      #codeWrapper {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        width: 70%;
+        margin-inline: auto;
+        min-width: 30px;
+      }
+
+      #copyBtn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(0,0,0,0.75);
+        color: white;
+        border: none;
+        border-radius: 0.4rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: background 0.2s, opacity 0.2s;
+        z-index: 2;
+      }
+
+      #copyBtn:hover {
+        background: black;
+      }
+
+      #copyBtn:active {
+        opacity: 0.6;
+      }
+
+      #instructions pre {
+        padding: 1rem;
+        overflow-x: auto;
+      }
+    </style>
+  `;
+
+  // Insert after main
+  main.insertAdjacentElement("afterend", section);
+
+  // Code content
+  const code = `
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.css">
+  <script src="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing-script.js"><\/script>
+  <main id="rm-landing">
+
+    <!-- Everything goes inside here -->
+
+  </main>`;
+
+  const codeBlock = document.getElementById("codeBlock");
+  codeBlock.textContent = code;
+
+  // Copy logic
+  const copyBtn = document.getElementById("copyBtn");
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
+    } catch (err) {
+      copyBtn.textContent = "Failed";
+    }
+  });
+
+  // Load Prism JS
+  const prismScript = document.createElement("script");
+  prismScript.src = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js";
+  prismScript.onload = function () {
+    if (window.Prism) Prism.highlightAll();
+  };
+  document.body.appendChild(prismScript);
+});
