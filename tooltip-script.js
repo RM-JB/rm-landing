@@ -765,7 +765,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Code content
   const code = `
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.css">
-  <script src="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing-script.js"><\/script>
+  <script src="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.js"><\/script>
   <main id="rm-landing">
 
     <!-- Everything goes inside here -->
