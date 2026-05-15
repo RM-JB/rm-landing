@@ -32,5 +32,9 @@
     if (document.querySelector("#rm-landing .slider")) {
       loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-slider.js`);
     }
+
+    if (document.querySelector("#rm-landing table")) {
+      loadScript(`${basePath}table-search.js`);
+    }
   });
 })();
