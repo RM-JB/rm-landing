@@ -122,6 +122,9 @@ main#rm-landing {
 
 main#rm-landing i {font-style: italic;}
 
+main#rm-landing p {max-width: 75ch;}
+main#rm-landing .center + p {margin-inline: auto;}
+
 main#rm-landing :is(section, article) {
   padding-bottom: 2rem !important;
   padding-top: 2rem !important;
@@ -160,13 +163,12 @@ main#rm-landing :is(button, a.button):not(.yt-play-btn, .rm-slider-dot) {
     --text-initial: white;
     --text-hover: black;
     border-color: var(--text-hover);
-  }
-  &.solid.red {
-    --bg-initial: red;
-    --bg-hover: rgb(255 255 255 / 0.05);
-    --text-initial: white;
-    --text-hover: red;
-    border-color: var(--text-hover);
+    &.red {
+      --bg-initial: red;
+      --bg-hover: rgb(255 255 255 / 0) !important;
+      --text-initial: white;
+      --text-hover: red;
+    }
   }
   &.invert {
     --bg-hover: white;
@@ -175,7 +177,7 @@ main#rm-landing :is(button, a.button):not(.yt-play-btn, .rm-slider-dot) {
   }
 }
 main#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){margin-top: 1rem !important;}
-main#rm-landing.tusk :is(button, a.button):not(.yt-play-btn, .rm-slider-dot, .red).solid {
+main#rm-landing.tusk :is(button, a.button):not(.yt-play-btn, .rm-slider-dot).solid {
   --bg-initial: white;
   --bg-hover: black;
   --text-initial: black;
@@ -189,6 +191,7 @@ main#rm-landing header {
   padding: 2rem 0;
   & h1 {padding-bottom: 2rem !important;}
   &:first-of-type {padding-top: 10rem;}
+  &:is(.black, .red, .grey) :is(h1, h2, h3, h4, h5, h6) {color: white;}
 }
 main#rm-landing.tusk header h1 {font-size: var(--step-5) !important;}
 
@@ -200,6 +203,70 @@ main#rm-landing .img-round img {
   margin-inline: auto;
   height: auto !important;
   width: 90% !important;
+}
+
+input.table-search {
+  box-sizing: border-box;
+  border: 1px solid var(--black);
+  border-radius: var(--radius);
+  display: block;
+  height: 2rem;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  margin-inline: auto !important;
+  padding: 0.5rem !important;
+  width: 35ch;
+}
+main#rm-landing table {
+    border-collapse: collapse;
+    border-radius: var(--radius);
+    border-spacing: 0;
+    font-size: clamp(0.75rem, 1.5vw, 1.1rem);
+    margin: 0;
+    padding: 0;
+    table-layout: fixed;
+    text-align: left;
+    width: 100%;
+  & :is(table, caption, tbody, tfoot, thead, tr, th, td) {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  & thead {
+    border: none !important;
+    color: white;
+    font-weight: bold;
+    top: 0;
+    & th {
+      /* --border-style: 1px solid black; */
+      background-color: var(--red);
+    }
+    & th:first-of-type {
+      border-radius: var(--radius) 0 0 0;
+    }
+    & th:last-of-type {
+      border-radius: 0 var(--radius) 0 0;
+    }
+  }
+  & th, & td {padding: 1rem;}
+  & :not(thead) tr {
+    transition: scale 250ms;
+    &:hover {scale: 1.01;}
+  }
+  & tr:nth-child(2n+2) {background-color: rgb(231 231 231);}
+  & td {
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    word-wrap: break-word;
+  }
+}
+main#rm-landing.tusk table {
+  background-color: black;
+  color: white;
+  & tr:nth-child(2n+2){background-color: rgb(255 255 255 / 0.2);}
 }
 
 main#rm-landing nav:not(:has(>.wrapper)) {
@@ -226,11 +293,15 @@ main#rm-landing .right {
   text-align: right;
 }
 
+main#rm-landing .full-width {grid-column: fullWidth;}
+
 main#rm-landing .full-bleed {
   display: grid;
   grid-column: fullWidth;
   grid-template-columns: [fullWidth-start] minmax(2rem, 1fr) [mainContent-start] minmax(1.5rem, var(--content-width)) [mainContent-end] minmax(2rem, 1fr) [fullWidth-end];
   &>* {grid-column: mainContent;}
+  &.bleed-left.column-2 .wrapper:first-child {outline: 3px solid lime;grid-column: fullWidth-start / mainContent-end;}
+  &.bleed-right.column-2 .wrapper:last-child {outline: 3px solid lime;grid-column: mainContent-start / fullWidth-end;}
   &>:is(button, a.button) {margin-left: 1em;}
 }
 main#rm-landing .full-bleed > .wrapper {max-width: var(--content-width);}
@@ -249,13 +320,6 @@ main#rm-landing :is(.black, .red, .grey):not(.slider span) {
     --text-hover: black;
     border-color: var(--text-hover);
   }
-  & :is(button, a.button).solid.red {
-    --bg-initial: red;
-    --bg-hover: white;
-    --text-initial: white;
-    --text-hover: red;
-    border-color: var(--text-hover);
-  }
 }
 main#rm-landing .black {background-color: black;}
 main#rm-landing.tusk .black {background-color: transparent;}
@@ -269,6 +333,7 @@ main#rm-landing :is([class^="column-"], [class*=" column-"]):not(:has(>div.wrapp
   grid-template-columns: repeat(var(--columns, 2), 1fr);
   align-items: center;
   place-items: center;
+  & > h1:first-child {opacity: 0.3;grid-column: 1 / -1;}
   & img {width: 100%;height: auto;}
   @media (max-width: 750px) {grid-template-columns: 1fr;}
 }
@@ -281,6 +346,9 @@ main#rm-landing :is(.column-4:not(.wrapper), .column-4 .wrapper) {
   --columns: 4;
   & :is(h1, h2, h3, h4, h5, h6) {font-size: var(--step-2);}
   @media (max-width: 750px) {grid-template-columns: 1fr 1fr !important;}
+}
+@media (max-width: 750px) {
+  main#rm-landing .column-4 .wrapper {padding: 0 2rem;}
 }
 
 main#rm-landing .gallery {height: fit-content;}
@@ -348,12 +416,13 @@ main#rm-landing .cover-image {
 }
 
 main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapper){
+  align-items: center;
   display: flex;
-  gap: 1rem;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 1rem;
+  height: fit-content;
   justify-content: center;
-  align-items: center;
   & > h1:first-of-type {flex-basis: 100%;text-align: center;}
   & div:not(.wrapper) {
     background-color: white;
@@ -371,24 +440,40 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
     text-align: center;
     transition: border-color 150ms, scale 250ms;
     &[data-tag]::after{
-      background-color: var(--red);
+      /* background-color: var(--red); */
+      --tag: var(--red);
+      backdrop-filter: blur(10px);
+      background-color: var(--tag);
       content: attr(data-tag);
+      border: 1px solid white;
       border-radius: calc(var(--radius) / 3);
       color: white;
       display: block;
-      grid-area: product;
+      font-weight: bold;
       font-size: 0.85em;
-      padding: 0.25rem 0.5rem;
+      grid-area: product;
+      padding: 0.25rem 0.75rem;
       text-transform: uppercase;
       position: absolute;
-      top: 1rem;
-      left: 1rem;
+      bottom: 1rem;
+      /* left: 1rem; */
+      left: 50%;
+      transform: translateX(-50%);
+      @media (max-width: 750px) {
+        font-size: 0.6em;
+      }
     }
-    &[data-tag=sale]::after {background-color: var(--red);}
-    &[data-tag=closeout]::after {background-color: var(--blue);}
-    &[data-tag=deal]::after {background-color: var(--green);}
-    &[data-tag=rebate]::after {background-color: var(--black);}
-    &[data-tag=limited]::after {background-color: var(--orange);}
+    &[data-tag=closeout]::after {--tag: var(--blue);}
+    &[data-tag=deal]::after {--tag: var(--green);}
+    &[data-tag=rebate]::after {--tag: var(--black);}
+    /* &[data-tag=limited]::after {background-color: var(--orange);} */
+    /* &[data-tag=closeout] p::before {
+      content: "Closeout Price";
+      color: var(--blue);
+      display: inline-block;
+      font-size: 0.75em;
+      transform: translateY(-0.1em) translateX(-0.25rem);
+    } */
     &:hover {border-color: rgb(0 0 0 / 0.35);}
     &>* {margin: 0 !important;&:not(a.button){padding: 0;}}
     & img:has(+ img):first-of-type {
@@ -397,11 +482,13 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
       place-self: center;
       max-width: 80px;
       margin-top: 1rem !important;
+      
     }
     & img {
       border-radius: 0;
-      &:not(img ~ img):only-of-type {transform: translateY(-0.5rem);}
-      &:last-of-type {grid-area: product;}
+      /* &:not(img ~ img):only-of-type {transform: translateY(-0.5rem);} */
+      &:not(img ~ img):only-of-type {padding-top: 0.45rem;}
+      &:last-of-type {grid-area: product;padding: 0 1rem;}
     }
 
     & :is(h1, h2, h3, h4, h5, h6) {
@@ -446,7 +533,8 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
     flex: 1 0 calc(33% - var(--gap));
     max-width: calc(33% - (var(--gap) / 3));
     grid-template-areas: "product brand" "product title" "product price" "product details" "product button";
-    grid-template-columns: 40% auto;
+    grid-template-columns: 45% auto;
+    padding: 1rem 0;
     place-items: center;
     @media (max-width: 950px) {
       flex: 1 0 calc(50% - var(--gap));
