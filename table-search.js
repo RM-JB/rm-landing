@@ -16,6 +16,7 @@ document.querySelectorAll(".table-search").forEach(input => {
   showMoreBtn.className = "table-show-more";
   showMoreBtn.style.display = "block";
   showMoreBtn.style.marginInline = "auto";
+  showMoreBtn.style.marginTop = "1rem";
 
   table.insertAdjacentElement("afterend", showMoreBtn);
 
