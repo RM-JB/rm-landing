@@ -7,13 +7,17 @@
       wrapper.dataset.ytReady = "true";
 
       const videoId = wrapper.dataset.videoId;
+      const customThumb = wrapper.dataset.thumbnail;
+
       const overlay = wrapper.querySelector(".yt-overlay");
       const playerEl = wrapper.querySelector(".yt-player");
 
       if (!videoId || !overlay || !playerEl) return;
 
-      overlay.style.backgroundImage =
-        `url(https://img.youtube.com/vi/${videoId}/maxresdefault.jpg)`;
+      overlay.style.backgroundImage = `url(${
+        customThumb ||
+        `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+      })`;
 
       const player = new YT.Player(playerEl, {
         videoId,
