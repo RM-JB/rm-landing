@@ -287,7 +287,7 @@ function getYtCopyHTML(el) {
   const opening = sectionClone.outerHTML.replace(`</${sectionClone.tagName.toLowerCase()}>`, '');
 
   return `${opening}
-<div class="yt-wrapper" data-video-id="${decodeHTML(videoId)}">
+<div class="yt-wrapper" data-video-id="${decodeHTML(videoId)}"  data-thumbnail="">
 <div class="yt-overlay">
     <button class="yt-play-btn" aria-label="Play video"></button>
 </div>
