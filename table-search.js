@@ -4,86 +4,77 @@ document.querySelectorAll(".table-search").forEach(input => {
   if (!table) return;
 
   const tbody = table.querySelector("tbody");
+  if (!tbody) return;
+
   const rows = [...tbody.querySelectorAll("tr")];
 
-  const perPage = 25;
-  let expanded = false;
-  let filteredRows = rows;
+  const parent = table.parentElement;
 
-  // Create button
-  const showMoreBtn = document.createElement("button");
+  // Create wrapper around table
+  const wrapper = document.createElement("div");
+  wrapper.className = "table-search-wrap";
 
-  showMoreBtn.className = "table-show-more";
-  showMoreBtn.style.display = "block";
-  showMoreBtn.style.marginInline = "auto";
-  showMoreBtn.style.marginTop = "1rem";
+  parent.insertBefore(wrapper, table);
+  wrapper.appendChild(table);
 
-  table.insertAdjacentElement("afterend", showMoreBtn);
+  wrapper.style.position = "relative";
+  wrapper.style.maxHeight = "75vh";
+  wrapper.style.overflow = "auto";
+
+  // Sticky headings
+  const thead = table.querySelector("thead");
+
+  if (thead) {
+    thead.style.position = "sticky";
+    thead.style.top = "0";
+    thead.style.zIndex = "5";
+  }
+
+  // Create scroll target after the parent
+  const scrollTarget = document.createElement("div");
+  scrollTarget.className = "table-scroll-target";
+  scrollTarget.setAttribute("aria-hidden", "true");
+
+  parent.insertAdjacentElement("afterend", scrollTarget);
+
+  // Floating skip button
+  const skipBtn = document.createElement("button");
+
+  skipBtn.className = "table-skip";
+  skipBtn.type = "button";
+  skipBtn.textContent = "Scroll Past Chart";
+
+  skipBtn.style.position = "sticky";
+  skipBtn.style.bottom = "1rem";
+  skipBtn.style.zIndex = "10";
+  skipBtn.style.display = "block";
+  skipBtn.style.marginInline = "auto";
+
+  wrapper.appendChild(skipBtn);
 
   function updateTable() {
 
-    // Hide all rows
-    rows.forEach(row => {
-      row.style.display = "none";
-    });
-
-    // Decide how many rows to show
-    const visibleCount = expanded
-      ? filteredRows.length
-      : perPage;
-
-    // Show rows
-    filteredRows.slice(0, visibleCount).forEach(row => {
-      row.style.display = "";
-    });
-
-    // Button logic
-    if (filteredRows.length <= perPage) {
-
-      showMoreBtn.style.display = "none";
-
-    } else {
-
-      showMoreBtn.style.display = "block";
-      showMoreBtn.textContent = expanded
-        ? "Show Less"
-        : "Show More";
-    }
-  }
-
-  // Search
-  input.addEventListener("input", () => {
-
     const value = input.value.toLowerCase().trim();
 
-    filteredRows = rows.filter(row =>
-      row.textContent.toLowerCase().includes(value)
-    );
+    rows.forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(value)
+        ? ""
+        : "none";
+    });
 
-    // Reset collapsed state after search
-    expanded = false;
+  }
 
-    updateTable();
+  input.addEventListener("input", updateTable);
+
+  skipBtn.addEventListener("click", event => {
+    event.preventDefault();
+
+    scrollTarget.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   });
 
-  // Toggle button
-  showMoreBtn.addEventListener("click", () => {
-
-    expanded = !expanded;
-
-    updateTable();
-
-    // Optional: scroll back to table when collapsing
-    if (!expanded) {
-      table.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-  });
-
-  // Initial state
   updateTable();
 
 });
