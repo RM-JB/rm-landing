@@ -190,7 +190,7 @@ main#rm-landing header {
   text-align: center;
   padding: 2rem 0;
   & h1 {padding-bottom: 2rem !important;}
-  &:first-of-type {padding-top: 10rem;}
+  &:first-of-type {padding-top: 2rem;&.cover-image {padding-top: 10rem;}}
   &:is(.black, .red, .grey) :is(h1, h2, h3, h4, h5, h6) {color: white;}
 }
 main#rm-landing.tusk header h1 {font-size: var(--step-5) !important;}
@@ -217,16 +217,18 @@ main#rm-landing input.table-search {
   padding: 0.5rem !important;
   width: 35ch;
 }
+.table-search-wrap {border-radius: var(--radius);}
 main#rm-landing table {
-    border-collapse: collapse;
-    border-radius: var(--radius);
-    border-spacing: 0;
-    font-size: clamp(0.75rem, 1.5vw, 1.1rem);
-    margin: 0;
-    padding: 0;
-    table-layout: fixed;
-    text-align: left;
-    width: 100%;
+  background-color: rgb(0 0 0 / 0.25);
+  border-collapse: collapse;
+  border-radius: var(--radius);
+  border-spacing: 0;
+  font-size: clamp(0.75rem, 1.5vw, 1.1rem);
+  margin: 0;
+  padding: 0;
+  table-layout: fixed;
+  text-align: left;
+  width: 100%;
   & :is(table, caption, tbody, tfoot, thead, tr, th, td) {
     margin: 0;
     padding: 0;
@@ -273,6 +275,7 @@ main#rm-landing.tusk table {
   text-align: center;
   & thead th {
     background-color: rgb(255 255 255 / 0.7); 
+    backdrop-filter: blur(5px);
     color: black;
     font-size: 1.05em;
   }
@@ -332,7 +335,7 @@ main#rm-landing :is(.black, .red, .grey):not(.slider span) {
   }
 }
 main#rm-landing .black {background-color: black;}
-main#rm-landing.tusk .black {background-color: transparent;}
+/* main#rm-landing.tusk .black {background-color: transparent;} */
 main#rm-landing .grey {background-color: var(--grey);}
 main#rm-landing .red {background-color: var(--red);}
 
