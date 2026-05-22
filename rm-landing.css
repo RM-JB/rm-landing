@@ -21,7 +21,7 @@ main#rm-landing :is(p, li) {text-wrap: pretty;}
 
 main#rm-landing {
   --content-width: 1400px;
-  --gap: 1rem;
+  --gap: 1.5rem; 
   --radius: 1rem;
 
   --black: rgb(0 0 0);
@@ -134,9 +134,41 @@ main#rm-landing a {
   color: var(--red);
 }
 
-main#rm-landing :is(button, a.button):not(.yt-play-btn, .rm-slider-dot) {
+
+main#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){margin-top: 1rem !important;}
+main#rm-landing.tusk :is(button, a.button):not(.yt-play-btn, .rm-slider-dot).solid {
+  --bg-initial: white;
+  --bg-hover: black;
+  --text-initial: black;
+  --text-hover: white;
+}
+
+@property --msr-btn-1 {
+  syntax: '<color>';
+  initial-value: #ff8e44;
+  inherits: false;
+}
+@property --msr-btn-2 {
+  syntax: '<color>';
+  initial-value: #f91362;
+  inherits: false;
+}
+main#rm-landing.msr :is(button, a.button):not(.yt-play-btn, .rm-slider-dot, .rm-slider-tab, .rm-slider-arrow) {
+  background-image: linear-gradient(-50deg, var(--msr-btn-1), var(--msr-btn-2));
+  color: white;
+  border: none;
+  transition: --msr-btn-1 250ms, --msr-btn-2 250ms;
+  &:hover {
+    --msr-btn-1: var(--black);
+    --msr-btn-2: var(--black);
+  }
+}
+
+main#rm-landing :is(button, a.button):not(.yt-play-btn, .rm-slider-dot),
+main#rm-landing.msr nav :is(button, a.button):not(.yt-play-btn, .rm-slider-dot, .rm-slider-tab, .rm-slider-arrow) {
   backdrop-filter: blur(5px);
   background-color: var(--bg-initial);
+  background-image: none;
   border: 1.5px solid var(--text-initial);
   border-radius: 100vw;
   color: var(--text-initial);
@@ -151,7 +183,6 @@ main#rm-landing :is(button, a.button):not(.yt-play-btn, .rm-slider-dot) {
     outline: 2px solid var(--bg-hover);
     outline-offset: 2px;
   }
-  
   &:hover {
     background-color: var(--bg-hover);
     color: var(--text-hover);
@@ -175,13 +206,6 @@ main#rm-landing :is(button, a.button):not(.yt-play-btn, .rm-slider-dot) {
     --text-initial: white;
     --text-hover: black;
   }
-}
-main#rm-landing img:has(+ :is(button, a.button)) + :is(button, a.button){margin-top: 1rem !important;}
-main#rm-landing.tusk :is(button, a.button):not(.yt-play-btn, .rm-slider-dot).solid {
-  --bg-initial: white;
-  --bg-hover: black;
-  --text-initial: black;
-  --text-hover: white;
 }
 
 main#rm-landing p:has(~ :is(button, a.button)) {margin-bottom: 1rem;}
@@ -306,7 +330,10 @@ main#rm-landing .right {
   text-align: right;
 }
 
-main#rm-landing .full-width {grid-column: fullWidth;}
+main#rm-landing .full-width {
+  grid-column: fullWidth;
+  &>img {border-radius: 0 var(--radius) var(--radius) 0;}
+}
 
 main#rm-landing .full-bleed {
   display: grid;
@@ -444,13 +471,12 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
     background-color: white;
     border: 1px solid rgb(0 0 0 / 0.1);
     border-radius: var(--radius);
-    cursor: pointer;
+    /* cursor: pointer; */
     display: grid;
     flex: 1 0 calc(25% - var(--gap));
     max-width: calc(25% - (var(--gap) / 4));
     gap: 0.5rem;
-    grid-template-areas: "brand" "product" "title" "price" "details" "button";
-    /* grid-template-areas: "brand" "product" "title" "tag" "price" "details" "button"; */
+    grid-template-areas: "brand" "product" "swatch" "title" "price" "details" "button";
     overflow: hidden;
     position: relative;
     text-align: center;
@@ -492,7 +518,7 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
     } */
     &:hover {border-color: rgb(0 0 0 / 0.35);}
     &>* {margin: 0 !important;&:not(a.button){padding: 0;}}
-    & img:has(+ img):first-of-type {
+    & > img:has(+ img):first-of-type {
       border-radius: 0;
       grid-area: brand;
       place-self: center;
@@ -500,11 +526,27 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
       margin-top: 1rem !important;
       
     }
-    & img {
+    & > img {
       border-radius: 0;
-      /* &:not(img ~ img):only-of-type {transform: translateY(-0.5rem);} */
       &:not(img ~ img):only-of-type {padding-top: 0.45rem;}
       &:last-of-type {grid-area: product;padding: 0 1rem;}
+    }
+    & span.swatch {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      grid-area: swatch;
+      height: 45px;
+      place-content: center;
+      width: 100%;
+      &>* {
+        border-radius: calc(var(--radius) / 3);
+        cursor: pointer;
+        transition: scale 250ms;
+        &:hover {
+          scale: 1.1;
+        }
+      }
     }
 
     & :is(h1, h2, h3, h4, h5, h6) {
@@ -548,8 +590,8 @@ main#rm-landing :is(.product-grid:not(:has(> .wrapper)), .product-grid div.wrapp
   &.product-horizontal div:not(.wrapper) {
     flex: 1 0 calc(33% - var(--gap));
     max-width: calc(33% - (var(--gap) / 3));
-    grid-template-areas: "product brand" "product title" "product price" "product details" "product button";
-    grid-template-columns: 45% auto;
+    grid-template-areas: "product brand" "product title" "product price" "product swatch" "product details" "product button";
+    grid-template-columns: 48% auto;
     padding: 1rem 0;
     place-items: center;
     @media (max-width: 950px) {
@@ -792,12 +834,11 @@ main#rm-landing :is(.rm-slider-dot, .rm-slider-tab)[aria-current="true"]{opacity
 }
 /* SLIDER STYLING END */
 
-
 main#rm-landing .callouts {
   display: grid;
   gap: var(--gap);
   grid-column: fullWidth;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 60% auto;
   & img {border-radius: 0 var(--radius) var(--radius) 0;width: 100%;}
   & img:not(:first-of-type) {display: none;}
   & div:not(:has(> img)) {
@@ -830,17 +871,27 @@ main#rm-landing.tusk .callouts {
       background-color: var(--black);
       border: 2px solid var(--black);
       border-left: 8px solid var(--red);
-      color: white;
       display: block;
-      margin-left: auto;
-      padding: 2rem 1rem;
-      transition: background-color 250ms, border 300ms, width 350ms;
-      width: 90%;
+      isolation: isolate;
       &.active {
-        background-color: color-mix(in srgb, var(--red-tusk), transparent 20%);
+        background-color: color-mix(in srgb, var(--red-tusk), transparent 80%);
         border: 2px solid var(--red);
         border-left: 8px solid var(--red);
-        width: 91%;
+        position: relative;
+      }
+   }
+}
+main#rm-landing.msr .callouts {
+  --msr-callout-color: var(--msr-btn-1);
+   & div:not(:has(> img)) span {
+      background-color: lightgray;
+      border: 2px solid var(--msr-callout-color);
+      border-left: 8px solid var(--msr-callout-color);
+      &.active {
+        background-color: color-mix(in srgb, var(--msr-callout-color), transparent 20%);
+        border: 2px solid var(--msr-callout-color);
+        border-left: 8px solid var(--msr-callout-color);
+        color: black;
       }
    }
 }
