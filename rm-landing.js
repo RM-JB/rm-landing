@@ -36,5 +36,9 @@
     if (document.querySelector("#rm-landing table")) {
       loadScript(`${basePath}table-search.js`);
     }
+
+    if (document.querySelector("#rm-landing .callouts")) {
+      loadScript(`${basePath}rm-callouts.js`);
+    }
   });
 })();
