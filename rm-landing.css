@@ -806,18 +806,41 @@ main#rm-landing .callouts {
     gap: 0.5rem;
     place-content: center;
     & span {
-      background-color: var(--black);
+      background-color: lightgray;
       border-left: 8px solid var(--red);
-      color: white;
       display: block;
+      font-size: 1.1em;
       margin-left: auto;
       padding: 2rem 1rem;
-      transition: width 250ms;
+      transition: background-color 250ms, border 300ms, width 350ms;
       width: 90%;
-      &.active {width: 95%;}
+      &.active {
+        background-color: var(--red);
+        color: white;
+        width: 91%;
+      }
     }
   }
   @media (max-width: 850px) {
     & {grid-template-columns: 1fr;}
   }
+}
+main#rm-landing.tusk .callouts {
+   & div:not(:has(> img)) span {
+      background-color: var(--black);
+      border: 2px solid var(--black);
+      border-left: 8px solid var(--red);
+      color: white;
+      display: block;
+      margin-left: auto;
+      padding: 2rem 1rem;
+      transition: background-color 250ms, border 300ms, width 350ms;
+      width: 90%;
+      &.active {
+        background-color: color-mix(in srgb, var(--red-tusk), transparent 20%);
+        border: 2px solid var(--red);
+        border-left: 8px solid var(--red);
+        width: 91%;
+      }
+   }
 }
