@@ -1,10 +1,10 @@
 (() => {
   document
     .querySelectorAll(`
-      // .product-grid > div:not(.wrapper),
-      // .product-grid > .wrapper > div,
-      // .product-horizontal > div:not(.wrapper),
-      // .product-horizontal > .wrapper > div,
+      .product-grid > div:not(.wrapper),
+      .product-grid > .wrapper > div,
+      .product-horizontal > div:not(.wrapper),
+      .product-horizontal > .wrapper > div,
       .column-2 > div:not(.wrapper),
       .column-2 > .wrapper > div,
       .column-3 > div:not(.wrapper),
