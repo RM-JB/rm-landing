@@ -869,13 +869,15 @@ main#rm-landing .callouts {
 main#rm-landing.tusk .callouts {
    & div:not(:has(> img)) span {
       background-color: var(--black);
-      border: 2px solid var(--black);
+      border-bottom: 2px solid var(--black);
+      border-top: 2px solid var(--black);
       border-left: 8px solid var(--red);
       display: block;
       isolation: isolate;
       &.active {
         background-color: color-mix(in srgb, var(--red-tusk), transparent 80%);
-        border: 2px solid var(--red);
+        border-bottom: 2px solid var(--red);
+        border-top: 2px solid var(--red);
         border-left: 8px solid var(--red);
         position: relative;
       }
@@ -885,11 +887,13 @@ main#rm-landing.msr .callouts {
   --msr-callout-color: var(--msr-btn-1);
    & div:not(:has(> img)) span {
       background-color: lightgray;
-      border: 2px solid var(--msr-callout-color);
+      border-bottom: 2px solid transparent;
+      border-top: 2px solid transparent;
       border-left: 8px solid var(--msr-callout-color);
       &.active {
         background-color: color-mix(in srgb, var(--msr-callout-color), transparent 20%);
-        border: 2px solid var(--msr-callout-color);
+        border-bottom: 2px solid var(--msr-callout-color);
+        border-top: 2px solid var(--msr-callout-color);
         border-left: 8px solid var(--msr-callout-color);
         color: black;
       }
