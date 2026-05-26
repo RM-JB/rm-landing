@@ -42,3 +42,14 @@
     }
   });
 })();
+
+document.querySelectorAll('.swatch img').forEach(swatchImg => {
+  swatchImg.addEventListener('click', () => {
+    const swatch = swatchImg.closest('.swatch');
+    const mainImg = swatch.previousElementSibling;
+
+    if (!mainImg || mainImg.tagName !== 'IMG') return;
+
+    mainImg.src = swatchImg.src;
+  });
+});
