@@ -22,7 +22,9 @@
       card.style.cursor = "pointer";
 
       card.addEventListener("click", e => {
-        if (e.target.closest("a")) return;
+        // Ignore clicks on links or swatches
+        if (e.target.closest("a, .swatch")) return;
+
         window.location.href = href;
       });
     });
