@@ -17,9 +17,9 @@
       loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-wrapper.js`);
     }
 
-    // if (document.querySelector(".product-grid, .product-horizontal, .column-2, .column-3, .column-4")) {
-    //   loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-clickable-cards.js`);
-    // }
+    if (document.querySelector(".product-grid, .product-horizontal, .column-2, .column-3, .column-4")) {
+      loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-clickable-cards.js`);
+    }
 
     if (document.querySelector(".yt-wrapper")) {
       loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-youtube.js`);
