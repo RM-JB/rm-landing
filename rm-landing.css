@@ -319,6 +319,12 @@ main#rm-landing :is(nav:not(.wrapper), nav .wrapper) {
   justify-content: space-around;
   padding: 1rem !important;
   & a::after {content: "" !important;}
+  @media (max-width: 750px) {
+         & {
+            gap: 0.25rem;
+            justify-content: center;
+         }
+      }
 }
 
 main#rm-landing .center {
