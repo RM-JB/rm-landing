@@ -473,7 +473,11 @@ function cleanClone(el) {
   const clone = el.cloneNode(true);
 
   unwrapWrappers(clone);
-
+  
+  clone
+    .querySelectorAll('h2[data-generated-heading="true"], p[data-generated-price="true"]')
+    .forEach(el => el.remove());
+  
   const all = [clone, ...clone.querySelectorAll('*')];
 
   all.forEach(node => {
