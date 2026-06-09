@@ -10,6 +10,30 @@
     return el.getAttribute("content") || el.textContent.trim();
   };
 
+  const getImageSrc = (img, baseUrl) => {
+    if (!img) return "";
+
+    const raw =
+      img.getAttribute("src") ||
+      img.getAttribute("data-src") ||
+      img.getAttribute("data-original") ||
+      img.getAttribute("data-lazy-src") ||
+      img.getAttribute("data-lazy") ||
+      img.getAttribute("data-image") ||
+      img.getAttribute("srcset") ||
+      "";
+
+    if (!raw) return "";
+
+    const firstSrc = raw.split(",")[0].trim().split(" ")[0];
+
+    try {
+      return new URL(firstSrc, baseUrl).href;
+    } catch {
+      return firstSrc;
+    }
+  };
+
   links.forEach((link) => {
     const url = link.href;
     (groups[url] ??= []).push(link);
@@ -28,6 +52,9 @@
       const highValue = getValue(doc.querySelector("[itemprop='highPrice']"));
       const priceValue = getValue(doc.querySelector("[itemprop='price']"));
 
+      const sourceImg = doc.querySelector("img.prodImgMed.initVl");
+      const sourceImgSrc = getImageSrc(sourceImg, url);
+
       let priceText = "—";
 
       if (lowValue && highValue) {
@@ -41,12 +68,27 @@
 
         const existingH2 = parent.querySelector("h2");
         const existingP = parent.querySelector("p");
+        const existingGeneratedImg = parent.querySelector("img[data-generated-image='true']");
+        const brandImg = parent.querySelector("img.brand");
+
+        if (sourceImgSrc && !existingGeneratedImg) {
+          const img = document.createElement("img");
+          img.src = sourceImgSrc;
+          img.alt = sourceImg?.alt || headingText || "";
+          img.className = "product-image";
+          img.dataset.generatedImage = "true";
+
+          if (brandImg) {
+            brandImg.insertAdjacentElement("afterend", img);
+          } else {
+            parent.insertAdjacentElement("afterbegin", img);
+          }
+        }
 
         if (!existingH2) {
           const title = document.createElement("h2");
           title.textContent = headingText;
           title.dataset.generatedHeading = "true";
-
           link.insertAdjacentElement("beforebegin", title);
         }
 
@@ -55,31 +97,11 @@
           price.className = "product-price";
           price.textContent = priceText;
           price.dataset.generatedPrice = "true";
-
           link.insertAdjacentElement("beforebegin", price);
         }
       });
-    } catch {
-      groups[url].forEach((link) => {
-        const parent = link.parentElement;
-
-        if (!parent.querySelector("h2")) {
-          const title = document.createElement("h2");
-          title.textContent = "—";
-          title.dataset.generatedHeading = "true";
-
-          link.insertAdjacentElement("beforebegin", title);
-        }
-
-        if (!parent.querySelector("p")) {
-          const price = document.createElement("p");
-          price.className = "product-price";
-          price.textContent = "—";
-          price.dataset.generatedPrice = "true";
-
-          link.insertAdjacentElement("beforebegin", price);
-        }
-      });
+    } catch (err) {
+      console.warn("Product fetch failed:", url, err);
     }
   }
 })();
