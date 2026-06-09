@@ -40,6 +40,10 @@
     if (document.querySelector("#rm-landing .callouts")) {
       loadScript(`${basePath}rm-callouts.js`);
     }
+
+    if (document.querySelector("#rm-landing .parallax")) {
+      loadScript(`${basePath}rm-parallax.js`);
+    }
   });
 })();
 
