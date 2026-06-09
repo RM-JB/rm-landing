@@ -53,7 +53,12 @@
       const priceValue = getValue(doc.querySelector("[itemprop='price']"));
 
       const sourceImg = doc.querySelector("img.prodImgMed.initVl");
-      const sourceImgSrc = getImageSrc(sourceImg, url);
+      // const sourceImgSrc = getImageSrc(sourceImg, url);
+      let sourceImgSrc = getImageSrc(sourceImg, url);
+
+      if (sourceImgSrc) {
+        sourceImgSrc = sourceImgSrc.replace("/275/", "/1001/");
+      }
 
       let priceText = "—";
 
