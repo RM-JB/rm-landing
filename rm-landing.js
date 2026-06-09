@@ -25,7 +25,7 @@
       loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-youtube.js`);
     }
 
-    if (document.querySelector("[data-link]")) {
+    if (document.querySelector("[data-link], [data-product-link]")) {
       loadScript(`https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-pricing.js`);
     }
 
