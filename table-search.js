@@ -30,28 +30,6 @@ document.querySelectorAll(".table-search").forEach(input => {
     thead.style.zIndex = "5";
   }
 
-  // Create scroll target after the parent
-  const scrollTarget = document.createElement("div");
-  scrollTarget.className = "table-scroll-target";
-  scrollTarget.setAttribute("aria-hidden", "true");
-
-  parent.insertAdjacentElement("afterend", scrollTarget);
-
-  // Floating skip button
-  const skipBtn = document.createElement("button");
-
-  skipBtn.className = "table-skip";
-  skipBtn.type = "button";
-  skipBtn.textContent = "Scroll Past Chart";
-
-  skipBtn.style.position = "sticky";
-  skipBtn.style.bottom = "1rem";
-  skipBtn.style.zIndex = "10";
-  skipBtn.style.display = "block";
-  skipBtn.style.marginInline = "auto";
-
-  wrapper.appendChild(skipBtn);
-
   function updateTable() {
 
     const value = input.value.toLowerCase().trim();
@@ -65,15 +43,6 @@ document.querySelectorAll(".table-search").forEach(input => {
   }
 
   input.addEventListener("input", updateTable);
-
-  skipBtn.addEventListener("click", event => {
-    event.preventDefault();
-
-    scrollTarget.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  });
 
   updateTable();
 
