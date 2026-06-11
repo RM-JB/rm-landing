@@ -793,8 +793,8 @@ main#rm-landing .slider:is(.black, .red, .grey) span{color: black;}
 main#rm-landing .slider div.rm-slider-slide{
   border-radius: var(--radius);
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
   width: 100%;
   & :is(.top-left, .left-top) {grid-area: 1 / 1 / 2 / 2 !important;place-content: start;}
   & :is(.top-center, .center-top) {grid-area: 1 / 2 / 2 / 3 !important;place-content: start;text-align: center;}
