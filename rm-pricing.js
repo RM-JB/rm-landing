@@ -41,43 +41,67 @@
 
   for (const url in groups) {
     try {
-      const res = await fetch(url, { cache: "no-store" });
+      const res = await fetch(url, {
+        cache: "no-store"
+      });
+
       const html = await res.text();
       const doc = parser.parseFromString(html, "text/html");
 
       const headingText =
-        doc.querySelector("h1#heading")?.textContent.trim() || "—";
+        doc.querySelector("h1#heading")?.textContent.trim() || "";
 
-      const lowValue = getValue(doc.querySelector("[itemprop='lowPrice']"));
-      const highValue = getValue(doc.querySelector("[itemprop='highPrice']"));
-      const priceValue = getValue(doc.querySelector("[itemprop='price']"));
+      const lowValue = getValue(
+        doc.querySelector("[itemprop='lowPrice']")
+      );
 
-      const sourceImg = doc.querySelector("img.prodImgMed.initVl");
-      // const sourceImgSrc = getImageSrc(sourceImg, url);
+      const highValue = getValue(
+        doc.querySelector("[itemprop='highPrice']")
+      );
+
+      const priceValue = getValue(
+        doc.querySelector("[itemprop='price']")
+      );
+
+      const sourceImg = doc.querySelector("img.prodImgMed");
+
       let sourceImgSrc = getImageSrc(sourceImg, url);
 
       if (sourceImgSrc) {
         sourceImgSrc = sourceImgSrc.replace("/275/", "/1001/");
       }
 
-      let priceText = "—";
+      let priceText = "";
 
       if (lowValue && highValue) {
         priceText = `$${lowValue} – $${highValue}`;
+      } else if (lowValue) {
+        priceText = `$${lowValue}`;
+      } else if (highValue) {
+        priceText = `$${highValue}`;
       } else if (priceValue) {
         priceText = `$${priceValue}`;
       }
 
       groups[url].forEach((link) => {
         const parent = link.parentElement;
+        if (!parent) return;
 
         const existingH2 = parent.querySelector("h2");
         const existingP = parent.querySelector("p");
-        const existingGeneratedImg = parent.querySelector("img[data-generated-image='true']");
+
+        const existingGeneratedImg = parent.querySelector(
+          "img[data-generated-image='true']"
+        );
+
         const brandImg = parent.querySelector("img.brand");
 
+        /*
+         * Product image
+         */
         if (sourceImgSrc && !existingGeneratedImg) {
           const img = document.createElement("img");
+
           img.src = sourceImgSrc;
           img.alt = sourceImg?.alt || headingText || "";
           img.className = "product-image";
@@ -90,18 +114,32 @@
           }
         }
 
-        if (!existingH2) {
+        /*
+         * Product title
+         *
+         * Only create the heading when a title was found.
+         */
+        if (!existingH2 && headingText) {
           const title = document.createElement("h2");
+
           title.textContent = headingText;
           title.dataset.generatedHeading = "true";
+
           link.insertAdjacentElement("beforebegin", title);
         }
 
-        if (!existingP) {
+        /*
+         * Product price
+         *
+         * Only create the paragraph when a price was found.
+         */
+        if (!existingP && priceText) {
           const price = document.createElement("p");
+
           price.className = "product-price";
           price.textContent = priceText;
           price.dataset.generatedPrice = "true";
+
           link.insertAdjacentElement("beforebegin", price);
         }
       });
@@ -110,3 +148,5 @@
     }
   }
 })();
+
+//<a class="button" href="https://www.rockymountainatvmc.com/casual/msr-powerslide-zip-up-hooded-sweatshirt-p" data-product-link>Shop</a>
