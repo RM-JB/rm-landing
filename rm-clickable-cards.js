@@ -10,7 +10,9 @@
       .column-3 > div:not(.wrapper),
       .column-3 > .wrapper > div,
       .column-4 > div:not(.wrapper),
-      .column-4 > .wrapper > div
+      .column-4 > .wrapper > div,
+      .promo > div:not(.wrapper),
+      .promo > .wrapper > div
     `)
     .forEach(card => {
       const button = card.querySelector("a.button");
