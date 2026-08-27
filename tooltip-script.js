@@ -756,7 +756,7 @@ return String(str).replace(/[&<>"']/g, char => ({
         const code = `
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.css">
         <script src="https://cdn.jsdelivr.net/gh/RM-JB/rm-landing@main/rm-landing.js"><\/script>
-            < main id = "rm-landing" >
+            <main id = "rm-landing">
 
     <!-- Everything goes inside here -->
 
